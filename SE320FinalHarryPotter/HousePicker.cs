@@ -1,17 +1,24 @@
 using System.Collections.Generic;
+using PotterFinal;
 
-namespace PotterFinal
+public class HousePicker
 {
-    public class HousePicker
-    {
-        private readonly HashSet<string> validHouses = new()
-        {
-            "Ravenclaw", "Slytherin", "Hufflepuff", "Gryffindor"
-        };
+    private HashSet<string> validHouses;
 
-        public string Evaluate(string userInput)
+    public HousePicker(SqliteOps sqliteOps)
+    {
+        validHouses = new HashSet<string>();
+        string query = "SELECT name FROM Houses";
+        var houseNames = sqliteOps.SelectQuery(query);
+        
+        foreach (var row in houseNames)
         {
-            return validHouses.Contains(userInput) ? userInput : "Invalid";
+            validHouses.Add(row.Split(',')[0]); // In case your rows have more than just the name
         }
+    }
+
+    public string Evaluate(string userInput)
+    {
+        return validHouses.Contains(userInput) ? userInput : "Invalid";
     }
 }
