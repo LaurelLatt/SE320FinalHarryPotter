@@ -94,3 +94,41 @@ public class AdminHouseDescription
         return false; //house not found
     }
 }
+
+//house count added 
+public class Student
+{
+    public string Name { get; set; }
+    public string HouseName { get; set; }
+
+    public Student(string name, string houseName)
+    {
+        Name = name;
+        HouseName = houseName;
+    }
+}
+
+public class HouseCountReveal
+{
+    private List<Student> _studentList = new List<Student>();
+
+    public void AddStudent(string name, string houseName)
+    {
+        var student = new Student(name, houseName);
+        _studentList.Add(student);
+    }
+
+    public int GetStudentCountInHouse(string houseName)
+    {
+        int count = 0;
+        foreach (var student in _studentList)
+        {
+            if (student.HouseName == houseName)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+}
