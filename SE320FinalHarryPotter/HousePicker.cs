@@ -7,8 +7,8 @@ public class HousePicker
 
     public HousePicker(SqliteOps sqliteOps)
     {
-        validHouses = new HashSet<string>();
-        string query = "SELECT name FROM Houses";
+        validHouses = new HashSet<string>(); // Empty string to be filled with houses
+        string query = "SELECT name FROM Houses"; // Selecting name FROM Houses
         var houseNames = sqliteOps.SelectQuery(query);
         
         foreach (var row in houseNames)
