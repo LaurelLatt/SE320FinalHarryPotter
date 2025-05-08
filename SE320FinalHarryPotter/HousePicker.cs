@@ -1,5 +1,6 @@
+namespace SE320FinalHarryPotter;
+
 using System.Collections.Generic;
-using PotterFinal;
 
 public class HousePicker
 {

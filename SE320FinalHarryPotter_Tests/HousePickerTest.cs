@@ -1,5 +1,6 @@
+namespace SE320FinalHarryPotter_Tests;
+
 using Microsoft.Data.Sqlite;
-using PotterFinal;
 using Xunit;
 
 public class HousePickerTest
