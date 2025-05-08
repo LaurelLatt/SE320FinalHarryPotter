@@ -1,10 +1,9 @@
 using SE320FinalHarryPotter;
-using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
-using Xunit;
+
 namespace SE320FinalHarryPotter_Tests;
 
-public class AdminCreateHouseTest
+public class AdminTest
 {
     private SqliteOps CreateTestSqliteOps(out SqliteConnection connection)
     {
@@ -30,14 +29,14 @@ public class AdminCreateHouseTest
     public void CreateHouseTest()
     {
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
-        AdminCreateHouse adminCreateHouse = new AdminCreateHouse { SqliteOps = sqliteOps };
+        Admin admin = new Admin { SqliteOps = sqliteOps };
         
-        adminCreateHouse.CreateHouse("Ravenclaw", "Rowena", "Eagle",
+        admin.CreateHouse("Ravenclaw", "Rowena", "Eagle",
             new List<string> { "Blue", "Silver" },
             new List<string> { "Wisdom", "Wit" },
             "Smart and sharp");
         
-        List<string> houses = adminCreateHouse.GetHouseList();
+        List<string> houses = admin.GetHouseList();
         Assert.Single(houses);
         Assert.Equal("1, Ravenclaw, Rowena, Eagle, Blue,Silver, Wisdom,Wit, Smart and sharp", houses[0]);
 
@@ -47,20 +46,16 @@ public class AdminCreateHouseTest
     public void UpdateHouseDescriptionChangesDescription()
     {
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
-        AdminCreateHouse adminCreateHouse = new AdminCreateHouse { SqliteOps = sqliteOps };
+        Admin admin = new Admin { SqliteOps = sqliteOps };
 
         // Insert a house
-        adminCreateHouse.CreateHouse("Slytherin", "Salazar", "Snake",
+        admin.CreateHouse("Slytherin", "Salazar", "Snake",
             new List<string> { "Green", "Silver" },
             new List<string> { "Cunning", "Ambition" },
             "Original description");
+        
 
-        AdminHouseDescription adminDesc = new AdminHouseDescription(adminCreateHouse)
-        {
-            SqliteOps = sqliteOps // Optional if not used internally
-        };
-
-        bool result = adminDesc.UpdateHouseDescription("Slytherin", "Updated description");
+        bool result = admin.UpdateHouseDescription("Slytherin", "Updated description");
         Assert.True(result);
 
         List<string> updated = sqliteOps.SelectQuery("SELECT description FROM Houses WHERE name = 'Slytherin'");

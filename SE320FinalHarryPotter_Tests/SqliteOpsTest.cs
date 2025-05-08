@@ -1,8 +1,8 @@
 using Microsoft.Data.Sqlite;
-using PotterFinal;
+using SE320FinalHarryPotter;
 using Xunit;
 
-namespace PotterFinalTest;
+namespace SE320FinalHarryPotter_Tests;
 
 
 public class SqliteOpsTest

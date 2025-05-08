@@ -1,4 +1,4 @@
-namespace PotterFinal;
+namespace SE320FinalHarryPotter;
 
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
