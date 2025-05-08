@@ -1,6 +1,7 @@
 using Microsoft.Data.Sqlite;
-using PotterFinal;
+using SE320FinalHarryPotter;
 using Xunit;
+using System.Collections.Generic;
 
 public class HousePickerTest
 {
@@ -10,9 +11,9 @@ public class HousePickerTest
     public HousePickerTest()
     {
         _connection = new SqliteConnection("Data Source=:memory:");
+        _connection.Open();
         _sqliteOps = new SqliteOps(_connection);
 
-        // Create Houses table
         string createTableQuery = @"
             CREATE TABLE Houses (
                 house_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,7 +27,6 @@ public class HousePickerTest
         ";
         _sqliteOps.ModifyQuery(createTableQuery);
 
-        // Insert sample data
         string[] houseNames = { "Ravenclaw", "Slytherin", "Hufflepuff", "Gryffindor" };
         foreach (var name in houseNames)
         {

@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using PotterFinal;
+using SE320FinalHarryPotter;
 
 public class HousePicker
 {
@@ -7,18 +6,18 @@ public class HousePicker
 
     public HousePicker(SqliteOps sqliteOps)
     {
-        validHouses = new HashSet<string>(); // Empty string to be filled with houses
-        string query = "SELECT name FROM Houses"; // Selecting name FROM Houses
+        validHouses = new HashSet<string>();
+        string query = "SELECT name FROM Houses";
         var houseNames = sqliteOps.SelectQuery(query);
-        
-        foreach (var row in houseNames)
+
+        foreach (var name in houseNames)
         {
-            validHouses.Add(row.Split(',')[0]); // In case your rows have more than just the name
+            validHouses.Add(name.Trim()); // Defensive: trim whitespace
         }
     }
 
     public string Evaluate(string userInput)
     {
-        return validHouses.Contains(userInput) ? userInput : "Invalid";
+        return validHouses.Contains(userInput.Trim()) ? userInput : "Invalid";
     }
 }
