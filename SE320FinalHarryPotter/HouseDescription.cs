@@ -5,7 +5,7 @@ public class HouseDescription(SqliteOps ops) {
 		Dictionary<string, string> parms = new();
 		parms.Add("@housename", houseName);
 		
-		List<string> list = ops.SelectQueryWithParams("select * from Houses where name = @housename limit 1", parms);
+		var list = ops.SelectQueryWithParams("select description from Houses where name = @housename limit 1", parms);
 		return list[0];
 	}
 }
