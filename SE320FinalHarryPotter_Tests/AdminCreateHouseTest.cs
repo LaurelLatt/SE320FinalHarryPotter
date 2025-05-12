@@ -30,7 +30,7 @@ public class AdminCreateHouseTest
     public void CreateHouseTest()
     {
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
-        AdminCreateHouse adminCreateHouse = new AdminCreateHouse { SqliteOps = sqliteOps };
+        Admin adminCreateHouse = new Admin { SqliteOps = sqliteOps };
         
         adminCreateHouse.CreateHouse("Ravenclaw", "Rowena", "Eagle",
             new List<string> { "Blue", "Silver" },
@@ -47,7 +47,7 @@ public class AdminCreateHouseTest
     public void UpdateHouseDescriptionChangesDescription()
     {
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
-        AdminCreateHouse adminCreateHouse = new AdminCreateHouse { SqliteOps = sqliteOps };
+        Admin adminCreateHouse = new Admin { SqliteOps = sqliteOps };
 
         // Insert a house
         adminCreateHouse.CreateHouse("Slytherin", "Salazar", "Snake",
@@ -55,12 +55,12 @@ public class AdminCreateHouseTest
             new List<string> { "Cunning", "Ambition" },
             "Original description");
 
-        AdminHouseDescription adminDesc = new AdminHouseDescription(adminCreateHouse)
-        {
-            SqliteOps = sqliteOps // Optional if not used internally
-        };
+        //AdminHouseDescription adminDesc = new AdminHouseDescription(adminCreateHouse)
+        //{ 
+          //  SqliteOps = sqliteOps // Optional if not used internally
+       // };
 
-        bool result = adminDesc.UpdateHouseDescription("Slytherin", "Updated description");
+        bool result = adminCreateHouse.UpdateHouseDescription("Slytherin", "Updated description");
         Assert.True(result);
 
         List<string> updated = sqliteOps.SelectQuery("SELECT description FROM Houses WHERE name = 'Slytherin'");
