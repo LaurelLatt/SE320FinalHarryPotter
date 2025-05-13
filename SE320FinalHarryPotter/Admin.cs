@@ -57,4 +57,32 @@ public class Admin
 
         return false; //house not found
     }
+    
+    // Change a user's house based on their user_id
+    public bool ChangeUserHouse(int userId, string newHouseName)
+    {
+        // Validate the house exists
+        var houseCheck = SqliteOps.SelectQueryWithParams(
+            "SELECT house_id FROM Houses WHERE name = @name",
+            new Dictionary<string, string> { { "@name", newHouseName } }
+        );
+
+        if (houseCheck.Count == 0)
+        {
+            return false; // House not found
+        }
+
+        // Update the user's house
+        SqliteOps.ModifyQueryWithParams(
+            "UPDATE Users SET house_name = @newHouse WHERE user_id = @userId",
+            new Dictionary<string, string>
+            {
+                { "@newHouse", newHouseName },
+                { "@userId", userId.ToString() }
+            }
+        );
+
+        return true;
+    }
+
 }

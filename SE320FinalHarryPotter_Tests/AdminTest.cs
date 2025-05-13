@@ -63,4 +63,38 @@ public class AdminTest
         Assert.Equal("Updated description", updated[0]);
         
     }
+    
+    [Fact]
+    public void ChangeUserHouse_UpdatesUserHouse_WhenHouseExists()
+    {
+        // Arrange: Setup Users table
+        var sqliteOps = CreateTestSqliteOps(out var connection);
+        var createUserTableCmd = connection.CreateCommand();
+        createUserTableCmd.CommandText = @"
+        CREATE TABLE Users (
+            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            house_name TEXT
+        );";
+        createUserTableCmd.ExecuteNonQuery();
+
+        Admin admin = new Admin { SqliteOps = sqliteOps };
+
+        // Insert houses
+        admin.CreateHouse("Gryffindor", "Godric", "Lion", new List<string> { "Red", "Gold" }, new List<string> { "Bravery" }, "Brave house");
+        admin.CreateHouse("Slytherin", "Salazar", "Snake", new List<string> { "Green", "Silver" }, new List<string> { "Cunning" }, "Cunning house");
+
+        // Insert user
+        sqliteOps.ModifyQuery("INSERT INTO Users (name, house_name) VALUES ('Harry Potter', 'Gryffindor')");
+
+        // Act: Change user's house
+        bool result = admin.ChangeUserHouse(1, "Slytherin");
+
+        // Assert: Check update succeeded and value changed
+        Assert.True(result);
+        var updated = sqliteOps.SelectQuery("SELECT house_name FROM Users WHERE user_id = 1");
+        Assert.Single(updated);
+        Assert.Equal("Slytherin", updated[0]);
+    }
+
 }
