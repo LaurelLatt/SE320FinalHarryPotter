@@ -30,9 +30,9 @@ public class UserTest
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
         User user = new User{ SqliteOps = sqliteOps };
         
-        user.CreateAccount("harry", "potter123", "1");
+        user.CreateAccount("harry", "potter123");
         
-        string query = "SELECT COUNT(*) FROM Users WHERE username = 'harry' AND password = 'potter123' AND house_id = 1";
+        string query = "SELECT COUNT(*) FROM Users WHERE username = 'harry' AND password = 'potter123'";
         List<string> results = sqliteOps.SelectQuery(query);
         int count = Int32.Parse(results[0]);
         
@@ -45,7 +45,7 @@ public class UserTest
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
         User user = new User{ SqliteOps = sqliteOps };
         
-        user.CreateAccount("harry", "potter123", "1");
+        user.CreateAccount("harry", "potter123");
         
         int userID = user.Login("harry", "potter123");
         
@@ -58,7 +58,7 @@ public class UserTest
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
         User user = new User{ SqliteOps = sqliteOps };
         
-        user.CreateAccount("harry", "potter123", "1");
+        user.CreateAccount("harry", "potter123");
         
         int userID = user.Login("harry", "potter");
         Assert.NotEqual(1, userID);
@@ -69,7 +69,7 @@ public class UserTest
     {
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
         User user = new User{ SqliteOps = sqliteOps };
-        user.CreateAccount("harry", "potter123", "1");
+        user.CreateAccount("harry", "potter123");
         int userID = user.Login("harry", "potter123");
         user.SetAdmin(userID);
 
@@ -80,5 +80,29 @@ public class UserTest
         int value = Int32.Parse(results[0]);
         
         Assert.Equal(1, value);
+    }
+
+    [Fact]
+    private void IsUniqueUsernameTrueTest()
+    {
+        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
+        User user = new User{ SqliteOps = sqliteOps };
+        user.CreateAccount("harry", "potter123");
+        user.CreateAccount("ron", "weasley456");
+        
+        bool result = user.IsUniqueUsername("hermione");
+        Assert.True(result);
+    }
+    
+    [Fact]
+    private void IsUniqueUsernameFalseTest()
+    {
+        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
+        User user = new User{ SqliteOps = sqliteOps };
+        user.CreateAccount("harry", "potter123");
+        user.CreateAccount("ron", "weasley456");
+        
+        bool result = user.IsUniqueUsername("harry");
+        Assert.False(result);
     }
 }
