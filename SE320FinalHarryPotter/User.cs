@@ -1,3 +1,4 @@
+using System.ComponentModel.Design.Serialization;
 using Microsoft.IdentityModel.Tokens;
 
 namespace SE320FinalHarryPotter;
@@ -55,10 +56,34 @@ public class User
             { "@username", username }
         };
         List<string> output = SqliteOps.SelectQueryWithParams(query, parameters);
-        if (output[0] == "0")
+        return output[0] == "0";
+    }
+    
+    //ask user which house they are in and it updates dataabse
+    public virtual void AskAndSetUserHouse(int userId)
+    {
+        Console.WriteLine("What house are you in?");
+        string input = Console.ReadLine()?.Trim();
+        
+        //validate the house using housepicked
+        var picker = new HousePicker(SqliteOps);
+        string validHouse = picker.Evaluate(input);
+
+        if (validHouse == "Invalid")
         {
-            return true;
+            Console.WriteLine("Invalid house. Please try again!");
+            return;
         }
-        return false;
+        
+        //update the user house in database
+        string query = "UPDATE Users SET house_name = @house WHERE user_id=@userID)";
+        Dictionary<string, string> queryParams = new Dictionary<string, string>()
+        {
+            { "@house", validHouse },
+            { "@userID", userId.ToString() }
+        };
+        
+        SqliteOps.ModifyQueryWithParams(query, queryParams);
+        Console.WriteLine($"Your House has been set to: {validHouse}.");
     }
 }
