@@ -4,12 +4,12 @@ namespace SE320FinalHarryPotter_Tests;
 using Microsoft.Data.Sqlite;
 using SE320FinalHarryPotter;
 
-public class HouseQueryTest {
+public class HouseDescriptorTest {
 	private SqliteConnection _connection;
 	private SqliteOps _sqliteOps;
-	private HouseQuery houseQuery;
+	private HouseDescriptor houseDescriptor;
 
-	public HouseQueryTest() {
+	public HouseDescriptorTest() {
 		_connection = new SqliteConnection("Data Source=:memory:");
 		_connection.Open();
 		_sqliteOps = new SqliteOps(_connection);
@@ -40,7 +40,7 @@ public class HouseQueryTest {
                 INSERT INTO Houses (name, founder, mascot, colors, traits, description)
                 VALUES (@name, @founder, @mascot, @colors, @traits, @description)
             ", queryParams);
-			houseQuery = new HouseQuery(_sqliteOps);
+			houseDescriptor = new HouseDescriptor(_sqliteOps);
 		}
 	}
 
@@ -50,6 +50,6 @@ public class HouseQueryTest {
 	[InlineData("Hufflepuff")]
 	[InlineData("Gryffindor")]
 	public void HouseDescription_Test(string houseName) {
-		Assert.Equal("Some description", houseQuery.GetHouseDescription(houseName));
+		Assert.Equal("Some description", houseDescriptor.GetHouseDescription(houseName));
 	}
 }
