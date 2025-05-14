@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.JavaScript;
 
 namespace SE320FinalHarryPotter_Tests;
 using Microsoft.Data.Sqlite;
@@ -40,6 +41,56 @@ public class HouseDescriptorTest {
                 VALUES (@name, @founder, @mascot, @colors, @traits, @description)
             ", queryParams);
 		}
+	}
+	
+	[Theory]
+	[InlineData("Ravenclaw")]
+	[InlineData("Slytherin")]
+	[InlineData("Hufflepuff")]
+	[InlineData("Gryffindor")]
+	public void HouseDescriptor_TestName(string houseName) {
+		HouseDescriptor descriptor = new (_sqliteOps, houseName);
+		Assert.Equal(houseName, descriptor.Name);
+	}
+	
+	[Theory]
+	[InlineData("Ravenclaw")]
+	[InlineData("Slytherin")]
+	[InlineData("Hufflepuff")]
+	[InlineData("Gryffindor")]
+	public void HouseDescriptor_TestFounder(string houseName) {
+		HouseDescriptor descriptor = new (_sqliteOps, houseName);
+		Assert.Equal("Founder", descriptor.Founder);
+	}
+	
+	[Theory]
+	[InlineData("Ravenclaw")]
+	[InlineData("Slytherin")]
+	[InlineData("Hufflepuff")]
+	[InlineData("Gryffindor")]
+	public void HouseDescriptor_TestMascot(string houseName) {
+		HouseDescriptor descriptor = new (_sqliteOps, houseName);
+		Assert.Equal("Mascot", descriptor.Mascot);
+	}
+	
+	[Theory]
+	[InlineData("Ravenclaw")]
+	[InlineData("Slytherin")]
+	[InlineData("Hufflepuff")]
+	[InlineData("Gryffindor")]
+	public void HouseDescriptor_TestColors(string houseName) {
+		HouseDescriptor descriptor = new (_sqliteOps, houseName);
+		Assert.Equal(["Blue", "Bronze"], descriptor.Colors);
+	}
+	
+	[Theory]
+	[InlineData("Ravenclaw")]
+	[InlineData("Slytherin")]
+	[InlineData("Hufflepuff")]
+	[InlineData("Gryffindor")]
+	public void HouseDescriptor_TestTraits(string houseName) {
+		HouseDescriptor descriptor = new (_sqliteOps, houseName);
+		Assert.Equal(["Smart", "Witty"], descriptor.Traits);
 	}
 
 	[Theory]
