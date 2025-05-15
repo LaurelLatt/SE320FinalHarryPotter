@@ -18,7 +18,15 @@ public class UserTest
                 house_id INT,
                 class_id INT,
                 is_admin TINYINT DEFAULT 0
-            );";
+            );
+            CREATE TABLE Houses (
+                house_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT
+            );
+            INSERT INTO Houses (name) VALUES ('Hufflepuff');
+            INSERT INTO Users (username, password, house_id) VALUES ('Cedric', 'Diggory123', 1);
+            INSERT INTO Users (username, password, house_id) VALUES ('Nymphadora', 'Tonks456', 1);
+            ";
         createCmd.ExecuteNonQuery();
     
         return new SqliteOps(connection);
@@ -49,7 +57,7 @@ public class UserTest
         
         int userID = user.Login("harry", "potter123");
         
-        Assert.Equal(1, userID);
+        Assert.Equal(3, userID);
     }
 
     [Fact]
@@ -61,7 +69,7 @@ public class UserTest
         user.CreateAccount("harry", "potter123");
         
         int userID = user.Login("harry", "potter");
-        Assert.NotEqual(1, userID);
+        Assert.NotEqual(3, userID);
     }
 
     [Fact]
@@ -104,5 +112,16 @@ public class UserTest
         
         bool result = user.IsUniqueUsername("harry");
         Assert.False(result);
+    }
+    
+    [Fact]
+    public void GetStudentCountInHouseSuccessfulTest()
+    {
+        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
+        User user = new User { SqliteOps = sqliteOps };
+        
+        int count = user.GetStudentCountInHouse("Hufflepuff");
+        
+        Assert.Equal(2, count);
     }
 }
