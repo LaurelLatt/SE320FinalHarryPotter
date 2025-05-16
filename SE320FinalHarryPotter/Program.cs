@@ -4,6 +4,9 @@ class Program
 {
     static void Main(string[] args)
     {
+        SqliteOps db = new SqliteOps();
+        db.EnsureSchema();
+        
         User user = new User();
         
         int userID = 0;

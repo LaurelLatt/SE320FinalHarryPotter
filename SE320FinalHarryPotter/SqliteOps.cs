@@ -10,7 +10,7 @@ public class SqliteOps : IDisposable
     // Default constructor for production
     public SqliteOps()
     {
-        string dbPath = Path.Combine(AppContext.BaseDirectory, "potterFinaldb");
+        string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "potterFinaldb");
         Console.WriteLine($"dbPath: {dbPath}");
         connection = new SqliteConnection($"Data Source={dbPath}");
         connection.Open();
@@ -112,5 +112,33 @@ public class SqliteOps : IDisposable
             command.ExecuteNonQuery();
         }
         
+    }
+    
+    public void EnsureSchema()
+    {
+        string userTableQuery = @"
+        CREATE TABLE IF NOT EXISTS Users (
+            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL,
+            house_name TEXT,
+            is_admin INTEGER DEFAULT 0
+        );
+    ";
+
+        string houseTableQuery = @"
+        CREATE TABLE IF NOT EXISTS Houses (
+            house_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL UNIQUE,
+            founder TEXT,
+            mascot TEXT,
+            colors TEXT,
+            traits TEXT,
+            description TEXT
+        );
+    ";
+
+        ModifyQuery(userTableQuery);
+        ModifyQuery(houseTableQuery);
     }
 }
