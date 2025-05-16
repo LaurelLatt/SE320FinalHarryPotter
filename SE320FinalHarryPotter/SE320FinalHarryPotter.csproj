@@ -12,4 +12,10 @@
       <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.0-preview.3.25171.6" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="potterFinaldb">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

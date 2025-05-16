@@ -4,6 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
+        Console.WriteLine(Directory.GetCurrentDirectory());
         User user = new User();
         
         int userID = 0;
