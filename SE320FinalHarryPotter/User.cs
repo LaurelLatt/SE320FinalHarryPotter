@@ -103,4 +103,22 @@ public class User
         
         return Int32.Parse(count[0]);
     }
+    public Dictionary<string, double> GetHouseMembershipPercentages()
+    {
+        var totalUsersResult = SqliteOps.SelectQuery("SELECT COUNT(*) FROM Users");
+        int totalUsers = int.Parse(totalUsersResult[0]);
+
+        var houseCounts = SqliteOps.SelectQuery("SELECT house_name, COUNT(*) FROM Users GROUP BY house_name");
+
+        var percentages = new Dictionary<string, double>();
+        foreach (var row in houseCounts)
+        {
+            var parts = row.Split(", ");
+            string house = parts[0];
+            int count = int.Parse(parts[1]);
+            percentages[house] = (double)count / totalUsers * 100;
+        }
+
+        return percentages;
+    }
 }
