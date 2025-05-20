@@ -2,22 +2,33 @@ using SE320FinalHarryPotter;
 
 public class HousePicker
 {
-    private HashSet<string> validHouses;
+    private readonly HashSet<string> _validHouses;
 
     public HousePicker(SqliteOps sqliteOps)
     {
-        validHouses = new HashSet<string>();
-        string query = "SELECT name FROM Houses";
-        var houseNames = sqliteOps.SelectQuery(query);
-
-        foreach (var name in houseNames)
-        {
-            validHouses.Add(name.Trim()); // Defensive: trim whitespace
-        }
+        _validHouses = LoadValidHouses(sqliteOps);
     }
 
-    public string Evaluate(string userInput)
+    private HashSet<string> LoadValidHouses(SqliteOps sqliteOps)
     {
-        return validHouses.Contains(userInput.Trim()) ? userInput : "Invalid";
+        var houses = new HashSet<string>();
+        var results = sqliteOps.SelectQuery("SELECT name FROM Houses");
+
+        foreach (var name in results)
+        {
+            if (!string.IsNullOrWhiteSpace(name))
+                houses.Add(name.Trim());
+        }
+
+        return houses;
+    }
+
+    public string Evaluate(string? userInput)
+    {
+        if (string.IsNullOrWhiteSpace(userInput))
+            return "Invalid";
+
+        string trimmedInput = userInput.Trim();
+        return _validHouses.Contains(trimmedInput) ? trimmedInput : "Invalid";
     }
 }
