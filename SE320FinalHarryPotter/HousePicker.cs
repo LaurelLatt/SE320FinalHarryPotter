@@ -4,15 +4,15 @@ public class HousePicker
 {
     private readonly HashSet<string> _validHouses;
 
-    public HousePicker(SqliteOps sqliteOps)
+    public HousePicker(IDataAccess dataAccess)
     {
-        _validHouses = LoadValidHouses(sqliteOps);
+        _validHouses = LoadValidHouses(dataAccess);
     }
 
-    private HashSet<string> LoadValidHouses(SqliteOps sqliteOps)
+    private HashSet<string> LoadValidHouses(IDataAccess dataAccess)
     {
-        var houses = new HashSet<string>();
-        var results = sqliteOps.SelectQuery("SELECT name FROM Houses");
+        HashSet<string> houses = new HashSet<string>();
+        List<string> results = dataAccess.GetHouseNames();
 
         foreach (var name in results)
         {

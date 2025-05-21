@@ -3,30 +3,26 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace SE320FinalHarryPotter;
 
-public class User
-{
-    public SqliteOps SqliteOps = new SqliteOps();
+public class User {
+    public int UserID;
+    
+    private IDataAccess dataAccess;
+    private SqliteOps ops;
 
+    public User(IDataAccess dataAccess) {
+        this.dataAccess = dataAccess;
+        this.ops = dataAccess.SqliteOps;
+    }
+    
     public virtual void CreateAccount(string username, string password)
     {
-        string query = "INSERT INTO Users(username, password) VALUES (@username, @password)";
-        Dictionary<string, string> queryParams = new Dictionary<string, string>()
-        {
-            { "@username", username },
-            { "@password", password },
-        };
-        SqliteOps.ModifyQueryWithParams(query, queryParams);
+        dataAccess.CreateAccount(username, password);
     }
 
     public virtual int Login(string username, string password)
     {
-        string query = "SELECT user_id FROM Users WHERE username=@username AND password=@password";
-        Dictionary<string, string> parameters = new Dictionary<string, string>()
-        {
-            { "@username", username },
-            { "@password", password }
-        };
-        List<string> output = SqliteOps.SelectQueryWithParams(query, parameters);
+        List<string> output = dataAccess.Login(username, password);
+        
         if (output.IsNullOrEmpty())
         {
             return 0;
@@ -40,42 +36,36 @@ public class User
 
     public virtual void SetAdmin(int userID)
     {
-        string query = "UPDATE Users SET is_admin=1 WHERE user_id=@userID";
-        Dictionary<string, string> parameters = new Dictionary<string, string>()
-        {
-            { "@userID", userID.ToString() }
-        };
-        SqliteOps.ModifyQueryWithParams(query, parameters);
+        dataAccess.SetAdmin(userID);
     }
 
     public virtual bool IsUniqueUsername(string username)
     {
-        string query = "SELECT COUNT(*) FROM Users WHERE username=@username";
-        Dictionary<string, string> parameters = new Dictionary<string, string>()
-        {
-            { "@username", username }
-        };
-        List<string> output = SqliteOps.SelectQueryWithParams(query, parameters);
-        return output[0] == "0";
+        return dataAccess.IsUniqueUsername(username);
     }
     
     //ask user which house they are in and it updates dataabse
     public virtual void AskAndSetUserHouse(int userId)
     {
+        
+        // UI
         Console.WriteLine("What house are you in?");
         string input = Console.ReadLine()?.Trim();
         
         //validate the house using housepicked
-        var picker = new HousePicker(SqliteOps);
+        var picker = new HousePicker(dataAccess);
         string validHouse = picker.Evaluate(input);
 
         if (validHouse == "Invalid")
         {
+            // UI
             Console.WriteLine("Invalid house. Please try again!");
             return;
         }
         
         //update the user house in database
+        
+        // databaase
         string query = "UPDATE Users SET house_name = @house WHERE user_id=@userID)";
         Dictionary<string, string> queryParams = new Dictionary<string, string>()
         {
@@ -83,12 +73,16 @@ public class User
             { "@userID", userId.ToString() }
         };
         
-        SqliteOps.ModifyQueryWithParams(query, queryParams);
+        ops.ModifyQueryWithParams(query, queryParams);
+        
+        // UI
         Console.WriteLine($"Your House has been set to: {validHouse}.");
     }
     
     public int GetStudentCountInHouse(string houseName)
     {
+        
+        // all goes in dataccess
         string query = @"SELECT COUNT(*)
                 FROM Users as U 
                 INNER JOIN Houses as H 
@@ -99,16 +93,17 @@ public class User
         {
             { "@houseName", houseName }
         };
-        List<string> count = SqliteOps.SelectQueryWithParams(query, queryParams);
+        List<string> count = ops.SelectQueryWithParams(query, queryParams);
         
         return Int32.Parse(count[0]);
     }
     public Dictionary<string, double> GetHouseMembershipPercentages()
     {
-        var totalUsersResult = SqliteOps.SelectQuery("SELECT COUNT(*) FROM Users");
+        // all goes in data access
+        var totalUsersResult = ops.SelectQuery("SELECT COUNT(*) FROM Users");
         int totalUsers = int.Parse(totalUsersResult[0]);
 
-        var houseCounts = SqliteOps.SelectQuery("SELECT house_name, COUNT(*) FROM Users GROUP BY house_name");
+        var houseCounts = ops.SelectQuery("SELECT house_name, COUNT(*) FROM Users GROUP BY house_name");
 
         var percentages = new Dictionary<string, double>();
         foreach (var row in houseCounts)

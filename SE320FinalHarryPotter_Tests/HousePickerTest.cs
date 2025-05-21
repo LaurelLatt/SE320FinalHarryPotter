@@ -53,7 +53,7 @@ public class HousePickerTest
     [InlineData("Gryffindor")]
     public void UserGetHouseCorrectResult(string userInputHouseName)
     {
-        var picker = new HousePicker(_sqliteOps);
+        var picker = new HousePicker(new SqlDataAccess(_sqliteOps));
         string result = picker.Evaluate(userInputHouseName);
         Assert.Equal(userInputHouseName, result);
     }
@@ -61,7 +61,7 @@ public class HousePickerTest
     [Fact]
     public void InvalidHouseReturnsInvalid()
     {
-        var picker = new HousePicker(_sqliteOps);
+        var picker = new HousePicker(new SqlDataAccess(_sqliteOps));
         string result = picker.Evaluate("Durmstrang");
         Assert.Equal("Invalid", result);
     }

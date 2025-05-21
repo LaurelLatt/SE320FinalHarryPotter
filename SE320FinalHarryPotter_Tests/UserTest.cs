@@ -36,7 +36,7 @@ public class UserTest
     private void CreateAccountSuccessfulTest()
     {
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
-        User user = new User{ SqliteOps = sqliteOps };
+        User user = new User(new SqlDataAccess(sqliteOps));
         
         user.CreateAccount("harry", "potter123");
         
@@ -51,7 +51,7 @@ public class UserTest
     private void LoginSuccessfulTest()
     {
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
-        User user = new User{ SqliteOps = sqliteOps };
+        User user = new User(new SqlDataAccess(sqliteOps));
         
         user.CreateAccount("harry", "potter123");
         
@@ -64,7 +64,7 @@ public class UserTest
     private void LoginFailedTest()
     {
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
-        User user = new User{ SqliteOps = sqliteOps };
+        User user = new User(new SqlDataAccess(sqliteOps));
         
         user.CreateAccount("harry", "potter123");
         
@@ -76,7 +76,7 @@ public class UserTest
     private void SetAdminSuccessfulTest()
     {
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
-        User user = new User{ SqliteOps = sqliteOps };
+        User user = new User(new SqlDataAccess(sqliteOps));
         user.CreateAccount("harry", "potter123");
         int userID = user.Login("harry", "potter123");
         user.SetAdmin(userID);
@@ -94,7 +94,7 @@ public class UserTest
     private void IsUniqueUsernameTrueTest()
     {
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
-        User user = new User{ SqliteOps = sqliteOps };
+        User user = new User(new SqlDataAccess(sqliteOps));
         user.CreateAccount("harry", "potter123");
         user.CreateAccount("ron", "weasley456");
         
@@ -106,7 +106,7 @@ public class UserTest
     private void IsUniqueUsernameFalseTest()
     {
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
-        User user = new User{ SqliteOps = sqliteOps };
+        User user = new User(new SqlDataAccess(sqliteOps));
         user.CreateAccount("harry", "potter123");
         user.CreateAccount("ron", "weasley456");
         
@@ -118,7 +118,7 @@ public class UserTest
     public void GetStudentCountInHouseSuccessfulTest()
     {
         SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
-        User user = new User { SqliteOps = sqliteOps };
+        User user = new User(new SqlDataAccess(sqliteOps));
         
         int count = user.GetStudentCountInHouse("Hufflepuff");
         
@@ -159,8 +159,10 @@ public class UserTest
         }
 
         // Use the public SqliteOps property in User (matching your current implementation)
-        var user = new User();
-        user.SqliteOps = sqliteOps;
+        var user = new User(new SqlDataAccess(sqliteOps));
+        
+        // let's not write drunk code next time, okay?
+        //user.SqliteOps = sqliteOps;
 
         var result = user.GetHouseMembershipPercentages();
 
