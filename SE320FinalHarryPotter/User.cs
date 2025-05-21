@@ -9,10 +9,9 @@ public class User {
     private IDataAccess dataAccess;
     private SqliteOps ops;
 
-    public User(IDataAccess dataAccess, SqliteOps ops)
-    {
+    public User(IDataAccess dataAccess) {
         this.dataAccess = dataAccess;
-        this.ops = ops;
+        this.ops = dataAccess.SqliteOps;
     }
     
     public virtual void CreateAccount(string username, string password)

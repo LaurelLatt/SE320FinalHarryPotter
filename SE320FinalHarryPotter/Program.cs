@@ -9,7 +9,7 @@ class Program
         // Make a UI Class that implements it, Program should be 2 lines to just run it
         Console.WriteLine(Directory.GetCurrentDirectory());
         SqliteOps ops = new ();
-        User user = new User(new SqlDataAccess(ops), ops);
+        User user = new User(new SqlDataAccess(ops));
         
         Login(user);
     }

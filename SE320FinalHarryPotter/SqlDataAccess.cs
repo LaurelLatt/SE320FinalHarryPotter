@@ -3,10 +3,12 @@ namespace SE320FinalHarryPotter;
 public class SqlDataAccess(SqliteOps sqliteOps) : IDataAccess {
     // To be able to reuse code, pull out database methods so that
     // you can create a method in a new project that manipulates a different database
+    
+    public SqliteOps SqliteOps { get; private set; } = sqliteOps;
 
     public List<string> GetHouseNames()
     {
-        return sqliteOps.SelectQuery("SELECT name FROM Houses");
+        return SqliteOps.SelectQuery("SELECT name FROM Houses");
     }
 
     public string GetHouseDescription(int houseId)
@@ -23,7 +25,7 @@ public class SqlDataAccess(SqliteOps sqliteOps) : IDataAccess {
             { "@username", username },
             { "@password", password },
         };
-        sqliteOps.ModifyQueryWithParams(query, queryParams);
+        SqliteOps.ModifyQueryWithParams(query, queryParams);
     }
 
     public List<string> Login(string username, string password)
@@ -34,7 +36,7 @@ public class SqlDataAccess(SqliteOps sqliteOps) : IDataAccess {
             { "@username", username },
             { "@password", password }
         };
-        return sqliteOps.SelectQueryWithParams(query, parameters);
+        return SqliteOps.SelectQueryWithParams(query, parameters);
     }
 
     public void SetAdmin(int userID)
@@ -44,7 +46,7 @@ public class SqlDataAccess(SqliteOps sqliteOps) : IDataAccess {
         {
             { "@userID", userID.ToString() }
         }; 
-        sqliteOps.ModifyQueryWithParams(query, parameters);
+        SqliteOps.ModifyQueryWithParams(query, parameters);
     }
 
     public bool IsUniqueUsername(string username)
@@ -54,7 +56,7 @@ public class SqlDataAccess(SqliteOps sqliteOps) : IDataAccess {
         {
             { "@username", username }
         };
-        List<string> output = sqliteOps.SelectQueryWithParams(query, parameters);
+        List<string> output = SqliteOps.SelectQueryWithParams(query, parameters);
         return output[0] == "0";
     }
 }

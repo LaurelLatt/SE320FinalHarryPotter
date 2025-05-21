@@ -2,6 +2,7 @@ namespace SE320FinalHarryPotter;
 
 public interface IDataAccess
 {
+    public SqliteOps SqliteOps { get; }
     public List<string> GetHouseNames();
     
     public string GetHouseDescription(int houseId);
