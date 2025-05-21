@@ -1,12 +1,9 @@
 namespace SE320FinalHarryPotter;
 
-public class SqlDataAccess : IDataAccess
-{
+public class SqlDataAccess(SqliteOps sqliteOps) : IDataAccess {
     // To be able to reuse code, pull out database methods so that
     // you can create a method in a new project that manipulates a different database
 
-    private SqliteOps sqliteOps;
-    
     public List<string> GetHouseNames()
     {
         return sqliteOps.SelectQuery("SELECT name FROM Houses");
