@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using SE320FinalHarryPotter;
 using Microsoft.Data.Sqlite;
 
@@ -20,45 +21,50 @@ public class AdminTest
                 colors TEXT,
                 traits TEXT,
                 description TEXT
-            );";
+            );
+        --users table stores info
+        CREATE TABLE Users (
+            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            house_name TEXT
+        );
+        ";
         createCmd.ExecuteNonQuery();
-    
+        
         return new SqliteOps(connection);
     }
     [Fact]
-    public void CreateHouseTest()
+    public void CreateHouse_ShouldInsertHouseCorrectlyTest()
     {
-        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
-        Admin admin = new Admin { SqliteOps = sqliteOps };
+        var sqliteOps = CreateTestSqliteOps(out var connection);
+        var admin = new Admin { SqliteOps = sqliteOps };
         
         admin.CreateHouse("Ravenclaw", "Rowena", "Eagle",
             new List<string> { "Blue", "Silver" },
             new List<string> { "Wisdom", "Wit" },
             "Smart and sharp");
         
-        List<string> houses = admin.GetHouseList();
+        var houses = admin.GetHouseList();
         Assert.Single(houses);
         Assert.Equal("1, Ravenclaw, Rowena, Eagle, Blue,Silver, Wisdom,Wit, Smart and sharp", houses[0]);
-
+        
     }
     
     [Fact]
     public void UpdateHouseDescriptionChangesDescription()
     {
-        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
-        Admin admin = new Admin { SqliteOps = sqliteOps };
-
-        // Insert a house
+        var sqliteOps = CreateTestSqliteOps(out var connection);
+        var admin = new Admin { SqliteOps = sqliteOps };
         admin.CreateHouse("Slytherin", "Salazar", "Snake",
             new List<string> { "Green", "Silver" },
             new List<string> { "Cunning", "Ambition" },
             "Original description");
         
-
+        
         bool result = admin.UpdateHouseDescription("Slytherin", "Updated description");
+        
         Assert.True(result);
-
-        List<string> updated = sqliteOps.SelectQuery("SELECT description FROM Houses WHERE name = 'Slytherin'");
+        var updated = sqliteOps.SelectQuery("SELECT description FROM Houses WHERE name = 'Slytherin'");
         Assert.Single(updated);
         Assert.Equal("Updated description", updated[0]);
         
@@ -67,30 +73,22 @@ public class AdminTest
     [Fact]
     public void ChangeUserHouse_UpdatesUserHouse_WhenHouseExists()
     {
-        // Arrange: Setup Users table
+        
         var sqliteOps = CreateTestSqliteOps(out var connection);
-        var createUserTableCmd = connection.CreateCommand();
-        createUserTableCmd.CommandText = @"
-        CREATE TABLE Users (
-            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
-            house_name TEXT
-        );";
-        createUserTableCmd.ExecuteNonQuery();
-
-        Admin admin = new Admin { SqliteOps = sqliteOps };
-
-        // Insert houses
-        admin.CreateHouse("Gryffindor", "Godric", "Lion", new List<string> { "Red", "Gold" }, new List<string> { "Bravery" }, "Brave house");
-        admin.CreateHouse("Slytherin", "Salazar", "Snake", new List<string> { "Green", "Silver" }, new List<string> { "Cunning" }, "Cunning house");
-
-        // Insert user
+        var admin = new Admin { SqliteOps = sqliteOps };
+        
+        admin.CreateHouse("Gryffindor", "Godric", "Lion",
+            new List<string> { "Red", "Gold" },
+            new List<string> { "Bravery" }, "Brave House");
+        admin.CreateHouse("Slytherin", "Salazar", "Snake",
+            new List<string> { "Green", "Silver" },
+            new List<string> { "Cunning" }, "Cunning House");
         sqliteOps.ModifyQuery("INSERT INTO Users (name, house_name) VALUES ('Harry Potter', 'Gryffindor')");
 
-        // Act: Change user's house
+        
         bool result = admin.ChangeUserHouse(1, "Slytherin");
 
-        // Assert: Check update succeeded and value changed
+        
         Assert.True(result);
         var updated = sqliteOps.SelectQuery("SELECT house_name FROM Users WHERE user_id = 1");
         Assert.Single(updated);
