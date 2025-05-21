@@ -3,16 +3,16 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace SE320FinalHarryPotter;
 
-public class User
-{
-    
+public class User {
     public int UserID;
     
     private IDataAccess dataAccess;
+    private SqliteOps ops;
 
-    public User(IDataAccess dataAccess)
+    public User(IDataAccess dataAccess, SqliteOps ops)
     {
         this.dataAccess = dataAccess;
+        this.ops = ops;
     }
     
     public virtual void CreateAccount(string username, string password)
@@ -74,7 +74,7 @@ public class User
             { "@userID", userId.ToString() }
         };
         
-        SqliteOps.ModifyQueryWithParams(query, queryParams);
+        ops.ModifyQueryWithParams(query, queryParams);
         
         // UI
         Console.WriteLine($"Your House has been set to: {validHouse}.");
@@ -94,17 +94,17 @@ public class User
         {
             { "@houseName", houseName }
         };
-        List<string> count = SqliteOps.SelectQueryWithParams(query, queryParams);
+        List<string> count = ops.SelectQueryWithParams(query, queryParams);
         
         return Int32.Parse(count[0]);
     }
     public Dictionary<string, double> GetHouseMembershipPercentages()
     {
         // all goes in data access
-        var totalUsersResult = SqliteOps.SelectQuery("SELECT COUNT(*) FROM Users");
+        var totalUsersResult = ops.SelectQuery("SELECT COUNT(*) FROM Users");
         int totalUsers = int.Parse(totalUsersResult[0]);
 
-        var houseCounts = SqliteOps.SelectQuery("SELECT house_name, COUNT(*) FROM Users GROUP BY house_name");
+        var houseCounts = ops.SelectQuery("SELECT house_name, COUNT(*) FROM Users GROUP BY house_name");
 
         var percentages = new Dictionary<string, double>();
         foreach (var row in houseCounts)
