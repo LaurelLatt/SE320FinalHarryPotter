@@ -5,7 +5,16 @@ Instructions for running the app:
        check student count, and see membership percentages.
 
 Summary of design decisions and architecture
-- 
+- Separation of Concerns
+   - UI.cs: Handles all user interaction (text menus, inputs, and outputs)
+   - User.cs, Admin.cs: Contains business logic like user login, setting 
+   houses, and admin tools
+   - SqliteOps.cs, SqlDataAccess.cs: Abstracts away direct database operations 
+   for reuse and decoupling
+- The IDataAccess interface allows the application to switch between different 
+database backends if needed.
+- User and Admin classes depend on IDataAccess rather than concrete database 
+classes, following dependency inversion.
 
 How we used Singleton, Observer, and Strategy patterns:
 Singleton:
