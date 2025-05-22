@@ -49,3 +49,17 @@ IDataAccess interface, NotifyObserver(houseName) is called to inform
 all registered observers.
 
 Strategy: 
+The Strategy Pattern is used in this project to abstract and decouple the data access layer from the business logic layer. 
+This is accomplished through the IDataAccess interface, which defines a consistent set of methods for database interaction, 
+and the SqlDataAccess class, which provides a concrete implementation using SQLite.
+* Strategy Interface: IDataAccess
+* Concrete Strategy: SqlDataAccess
+* Used By: User, Admin, HousePicker, HouseDescriptor, and others
+All logic-layer classes depend on the IDataAccess interface rather than directly calling SQL commands or 
+using a specific database engine. This enables the application to easily swap out SqlDataAccess for another data
+source in the future — such as a mock data provider, a cloud database, or even a flat file, without changing any core logic.
+For example, in testing, SqlDataAccess can be initialized with a separate in-memory SqliteOps instance to allow fast 
+and isolated unit testing. This pattern also supports future extensibility, where multiple IDataAccess strategies 
+could be created (e.g., InMemoryDataAccess, PostgresDataAccess, etc.) depending on deployment context.
+This implementation demonstrates flexible, interchangeable behavior, a key principle of the Strategy Pattern.
+
