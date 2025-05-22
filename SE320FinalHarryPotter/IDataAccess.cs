@@ -26,6 +26,13 @@ public interface IDataAccess
     public List<string> GetHouseList();
     
     public string GetHouseIdByName(string houseName);
+    
+    public string GetHouseFounder(string houseName);
+    public string GetHouseMascot(string houseName);
+    public string GetHouseDescription(string houseName);
+    
+    public string[] GetHouseColors(string houseName);
+    public string[] GetHouseTraits(string houseName);
 
     public void UpdateHouseDescription(string houseId, string description);
 

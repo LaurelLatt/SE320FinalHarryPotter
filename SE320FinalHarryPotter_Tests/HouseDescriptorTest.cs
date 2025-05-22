@@ -27,8 +27,8 @@ public class HouseDescriptorTest {
 		_sqliteOps.ModifyQuery(createTableQuery);
 
 		string[] houseNames = { "Ravenclaw", "Slytherin", "Hufflepuff", "Gryffindor" };
-		foreach (var name in houseNames) {
-			var queryParams = new Dictionary<string, string> {
+		foreach (string name in houseNames) {
+			Dictionary<string, string> queryParams = new Dictionary<string, string> {
 				{ "@name", name },
 				{ "@founder", "Founder" },
 				{ "@mascot", "Mascot" },
@@ -49,7 +49,8 @@ public class HouseDescriptorTest {
 	[InlineData("Hufflepuff")]
 	[InlineData("Gryffindor")]
 	public void HouseDescriptor_TestName(string houseName) {
-		HouseDescriptor descriptor = new (_sqliteOps, houseName);
+		IDataAccess dataAccess = new SqlDataAccess(_sqliteOps);
+		HouseDescriptor descriptor = new (dataAccess, houseName);
 		Assert.Equal(houseName, descriptor.Name);
 	}
 	
@@ -59,7 +60,8 @@ public class HouseDescriptorTest {
 	[InlineData("Hufflepuff")]
 	[InlineData("Gryffindor")]
 	public void HouseDescriptor_TestFounder(string houseName) {
-		HouseDescriptor descriptor = new (_sqliteOps, houseName);
+		IDataAccess dataAccess = new SqlDataAccess(_sqliteOps);
+		HouseDescriptor descriptor = new (dataAccess, houseName);
 		Assert.Equal("Founder", descriptor.Founder);
 	}
 	
@@ -69,7 +71,8 @@ public class HouseDescriptorTest {
 	[InlineData("Hufflepuff")]
 	[InlineData("Gryffindor")]
 	public void HouseDescriptor_TestMascot(string houseName) {
-		HouseDescriptor descriptor = new (_sqliteOps, houseName);
+		IDataAccess dataAccess = new SqlDataAccess(_sqliteOps);
+		HouseDescriptor descriptor = new (dataAccess, houseName);
 		Assert.Equal("Mascot", descriptor.Mascot);
 	}
 	
@@ -79,7 +82,8 @@ public class HouseDescriptorTest {
 	[InlineData("Hufflepuff")]
 	[InlineData("Gryffindor")]
 	public void HouseDescriptor_TestColors(string houseName) {
-		HouseDescriptor descriptor = new (_sqliteOps, houseName);
+		IDataAccess dataAccess = new SqlDataAccess(_sqliteOps);
+		HouseDescriptor descriptor = new (dataAccess, houseName);
 		Assert.Equal(["Blue", "Bronze"], descriptor.Colors);
 	}
 	
@@ -89,7 +93,8 @@ public class HouseDescriptorTest {
 	[InlineData("Hufflepuff")]
 	[InlineData("Gryffindor")]
 	public void HouseDescriptor_TestTraits(string houseName) {
-		HouseDescriptor descriptor = new (_sqliteOps, houseName);
+		IDataAccess dataAccess = new SqlDataAccess(_sqliteOps);
+		HouseDescriptor descriptor = new (dataAccess, houseName);
 		Assert.Equal(["Smart", "Witty"], descriptor.Traits);
 	}
 
@@ -99,7 +104,8 @@ public class HouseDescriptorTest {
 	[InlineData("Hufflepuff")]
 	[InlineData("Gryffindor")]
 	public void HouseDescriptor_TestDescription(string houseName) {
-		HouseDescriptor descriptor = new (_sqliteOps, houseName);
+		IDataAccess dataAccess = new SqlDataAccess(_sqliteOps);
+		HouseDescriptor descriptor = new (dataAccess, houseName);
 		Assert.Equal("Some description", descriptor.Description);
 	}
 }

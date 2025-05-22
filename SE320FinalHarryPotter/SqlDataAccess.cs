@@ -1,10 +1,22 @@
 namespace SE320FinalHarryPotter;
 
-public class SqlDataAccess() : IDataAccess {
+public class SqlDataAccess : IDataAccess {
     // To be able to reuse code, pull out database methods so that
     // you can create a method in a new project that manipulates a different database
 
     private SqliteOps sqliteOps = new SqliteOps();
+    
+    //  Constructor 1 - Default for production
+    public SqlDataAccess()
+    {
+        sqliteOps = new SqliteOps();
+    }
+
+    // Constructor 2 - For testing (injection)
+    public SqlDataAccess(SqliteOps customOps)
+    {
+        sqliteOps = customOps;
+    }
 
     public List<string> GetHouseNames()
     {
@@ -146,7 +158,7 @@ public class SqlDataAccess() : IDataAccess {
         );
     }
 
-    public string GetUserHouseName(int userId)
+  public string GetUserHouseName(int userId)
     {
         string query = "SELECT Houses.name FROM Users INNER JOIN Houses ON Users.house_id = Houses.house_id WHERE User_id = @UserID";
         Dictionary<string, string> queryParams = new()
@@ -182,5 +194,39 @@ public class SqlDataAccess() : IDataAccess {
             return true;
         }
         return false;
+
+    public string GetHouseFounder(string houseName) {
+        return GetSingular(houseName, "founder");
+    }
+
+    public string GetHouseMascot(string houseName) {
+        return GetSingular(houseName, "mascot");
+    }
+
+    public string GetHouseDescription(string houseName) {
+        return GetSingular(houseName, "description");
+    }
+
+    public string[] GetHouseColors(string houseName) {
+        return GetMultiple(houseName, "colors");
+    }
+
+    public string[] GetHouseTraits(string houseName) {
+        return GetMultiple(houseName, "traits");
+    }
+    
+    private string GetSingular(string houseName, string attribute) {
+        Dictionary<string, string> parms = new();
+        parms.Add("@name", houseName);
+
+        // dangerous :O
+        var list = sqliteOps.SelectQueryWithParams("SELECT " + attribute + " FROM Houses WHERE name = @name LIMIT 1",
+            parms);
+        return list[0];
+    }
+
+    // TODO: Make the query return an array or List to begin with
+    private string[] GetMultiple(string houseName, string attribute) {
+        return GetSingular(houseName, attribute).Split(',');
     }
 }
