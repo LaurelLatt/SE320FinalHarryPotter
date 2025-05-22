@@ -18,6 +18,17 @@ classes, following dependency inversion.
 
 How we used Singleton, Observer, and Strategy patterns:
 Singleton:
+The Singleton Pattern is used in this project to restrict the instantiation of the UI class to a single object. 
+This ensures that only one instance of the user interface exists and is shared across the application, 
+preventing inconsistent behavior or duplicated input loops.
+* Singleton Class: UI
+* Access Point: UI.Instance
+* Used By: Any part of the app that needs to interact with user input and menus
+In UI.cs, the constructor is marked private so no other class can instantiate UI directly. 
+Instead, a static property Instance checks whether an instance already exists, if not,
+it creates one and returns it. This pattern ensures that all parts of the application reference the same UI object, 
+promoting consistency and avoiding unnecessary object creation. It also simplifies access, since no constructor 
+parameters or dependency injection is required for UI-related tasks.
 
 Observer:
 The Observer Pattern is used in this project to demonstrate decoupled communication 
