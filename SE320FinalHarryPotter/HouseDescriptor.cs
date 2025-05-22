@@ -1,6 +1,6 @@
 namespace SE320FinalHarryPotter;
 
-public class HouseDescriptor(SqliteOps ops, String name) {
+public class HouseDescriptor(IDataAccess dataAccess, String name) {
 	public string Name => name;
 	public string Founder => GetSingular("founder");
 
