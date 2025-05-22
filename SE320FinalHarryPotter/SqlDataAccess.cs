@@ -1,14 +1,14 @@
 namespace SE320FinalHarryPotter;
 
-public class SqlDataAccess(SqliteOps sqliteOps) : IDataAccess {
+public class SqlDataAccess() : IDataAccess {
     // To be able to reuse code, pull out database methods so that
     // you can create a method in a new project that manipulates a different database
-    
-    public SqliteOps SqliteOps { get; private set; } = sqliteOps;
+
+    private SqliteOps sqliteOps = new SqliteOps();
 
     public List<string> GetHouseNames()
     {
-        return SqliteOps.SelectQuery("SELECT name FROM Houses");
+        return sqliteOps.SelectQuery("SELECT name FROM Houses");
     }
 
     public string GetHouseDescription(int houseId)
@@ -25,7 +25,7 @@ public class SqlDataAccess(SqliteOps sqliteOps) : IDataAccess {
             { "@username", username },
             { "@password", password },
         };
-        SqliteOps.ModifyQueryWithParams(query, queryParams);
+        sqliteOps.ModifyQueryWithParams(query, queryParams);
     }
 
     public List<string> Login(string username, string password)
@@ -36,7 +36,7 @@ public class SqlDataAccess(SqliteOps sqliteOps) : IDataAccess {
             { "@username", username },
             { "@password", password }
         };
-        return SqliteOps.SelectQueryWithParams(query, parameters);
+        return sqliteOps.SelectQueryWithParams(query, parameters);
     }
 
     public void SetAdmin(int userID)
@@ -46,7 +46,7 @@ public class SqlDataAccess(SqliteOps sqliteOps) : IDataAccess {
         {
             { "@userID", userID.ToString() }
         }; 
-        SqliteOps.ModifyQueryWithParams(query, parameters);
+        sqliteOps.ModifyQueryWithParams(query, parameters);
     }
 
     public bool IsUniqueUsername(string username)
@@ -56,7 +56,93 @@ public class SqlDataAccess(SqliteOps sqliteOps) : IDataAccess {
         {
             { "@username", username }
         };
-        List<string> output = SqliteOps.SelectQueryWithParams(query, parameters);
+        List<string> output = sqliteOps.SelectQueryWithParams(query, parameters);
         return output[0] == "0";
+    }
+
+    public int GetStudentCountInHouse(string houseName)
+    {
+        string query = @"SELECT COUNT(*)
+                FROM Users as U 
+                INNER JOIN Houses as H 
+                    ON U.house_id = H.house_id
+                WHERE H.name = @houseName;";
+
+        Dictionary<string, string> queryParams = new Dictionary<string, string>()
+        {
+            { "@houseName", houseName }
+        };
+        List<string> count = sqliteOps.SelectQueryWithParams(query, queryParams);
+        
+        return Int32.Parse(count[0]);
+    }
+
+    public int GetTotalStudentCount()
+    {
+        List<string> totalUsersResult = sqliteOps.SelectQuery("SELECT COUNT(*) FROM Users");
+        int totalUsers = int.Parse(totalUsersResult[0]);
+        return totalUsers;
+    }
+
+    public List<string> GetStudentCountInHouseList()
+    {
+        return sqliteOps.SelectQuery("SELECT house_name, COUNT(*) FROM Users GROUP BY house_name");
+    }
+
+    public void CreateHouse(string name, string founder, string mascot, string colors, string traits, string description)
+    {
+        string query = @"INSERT INTO Houses(name, founder, mascot, colors, traits, description)
+                        VALUES (@name, @founder, @mascot, @colors, @traits, @description)
+                        ";
+        Dictionary<string, string> queryParams = new()
+        {
+            { "@name", name },
+            { "@founder", founder },
+            { "@mascot", mascot },
+            { "@colors", colors },
+            { "@traits", traits },
+            { "@description", description }
+        };
+        sqliteOps.ModifyQueryWithParams(query, queryParams);
+    }
+
+    public List<string> GetHouseList()
+    {
+        string query = @"SELECT * FROM Houses";
+        return sqliteOps.SelectQuery(query);
+    }
+
+    public string GetHouseIdByName(string houseName)
+    {
+        string query = @"SELECT house_id FROM Houses WHERE name = @name";
+        Dictionary<string, string> queryParams = new()
+        {
+            { "@name", houseName }
+        };
+        List<string> houseID= sqliteOps.SelectQueryWithParams(query, queryParams);
+        return houseID.Count > 0 ? houseID[0] : "";
+    }
+
+    public void UpdateHouseDescription(string houseId, string newDescription)
+    {
+        string query = "UPDATE Houses SET description = @newDescription WHERE house_id = @houseId";
+        Dictionary<string, string> queryParams = new()
+        {
+            { "@newDescription", newDescription },
+            { "@houseId", houseId }
+        };
+        sqliteOps.ModifyQueryWithParams(query, queryParams);
+    }
+
+    public void UpdateUserHouse(int userId, string newHouseName)
+    {
+        sqliteOps.ModifyQueryWithParams(
+            "UPDATE Users SET house_id = @newHouse WHERE user_id = @userId",
+            new Dictionary<string, string>
+            {
+                { "@newHouse", newHouseName },
+                { "@userId", userId.ToString() }
+            }
+        );
     }
 }

@@ -81,4 +81,13 @@ public class UI
         userID = user.Login(username, password);
         return userID;
     }
+
+    private void PerformSetUserHouse(User user)
+    {
+        // UI
+        Console.WriteLine("What house are you in?");
+        string input = Console.ReadLine()?.Trim();
+        
+        user.SetUserHouse(user.UserID, input);
+    }
 }

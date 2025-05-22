@@ -17,6 +17,12 @@ public class Admin
     public SqliteOps SqliteOps = new SqliteOps();
     //observer pattern support
     private List<IHouseObserver> _observers = new List<IHouseObserver>();
+    
+    private IDataAccess dataAccess;
+
+    public Admin(IDataAccess dataAccess) {
+        this.dataAccess = dataAccess;
+    }
     public void AddObserver(IHouseObserver observer)
     {
         _observers.Add(observer);
@@ -28,55 +34,28 @@ public class Admin
             observer.OnHouseCreated(houseName);
         }
     }
-    public void CreateHouse(string name, string founder, string mascot, List<string> colors, List<string> traits, string description)
+    public void CreateHouse(string name, string founder, string mascot, string colors, string traits, string description)
     {
-        
-        string query = @"INSERT INTO Houses(name, founder, mascot, colors, traits, description)
-                        VALUES (@name, @founder, @mascot, @colors, @traits, @description)
-                        ";
-        Dictionary<string, string> queryParams = new()
-        {
-            { "@name", name },
-            { "@founder", founder },
-            { "@mascot", mascot },
-            { "@colors", string.Join(",", colors) },
-            { "@traits", string.Join(",", traits) },
-            { "@description", description }
-        };
-        SqliteOps.ModifyQueryWithParams(query, queryParams);
+        dataAccess.CreateHouse(name, founder, mascot, colors, traits, description);
         NotifyObserver(name);//observer hook
     }
     
     public List<string> GetHouseList()
     {
-        string query = @"SELECT * FROM Houses";
-        return SqliteOps.SelectQuery(query);
-        
+        return dataAccess.GetHouseList();
     }
     
-    public string GetHouseByName(string name)
+    public string GetHouseIdByName(string name)
     {
-        string query = @"SELECT house_id FROM Houses WHERE name = @name";
-        Dictionary<string, string> queryParams = new()
-        {
-            { "@name", name }
-        };
-        List<string> houseID= SqliteOps.SelectQueryWithParams(query, queryParams);
-        return houseID.Count > 0 ? houseID[0] : "";
+        return dataAccess.GetHouseIdByName(name);
     }
     
     public bool UpdateHouseDescription(string houseName, string newDescription)
     {
-        string houseID = GetHouseByName(houseName);
+        string houseID = GetHouseIdByName(houseName);
         if (!string.IsNullOrWhiteSpace(houseID))
         {
-            string query = "UPDATE Houses SET description = @newDescription WHERE house_id = @houseId";
-            Dictionary<string, string> queryParams = new()
-            {
-                { "@newDescription", newDescription },
-                { "@houseId", houseID }
-            };
-            SqliteOps.ModifyQueryWithParams(query, queryParams);
+            dataAccess.UpdateHouseDescription(houseID, newDescription);
             return true;
         }
         return false;
@@ -86,27 +65,14 @@ public class Admin
     public bool ChangeUserHouse(int userId, string newHouseName)
     {
         
-        var houseCheck = SqliteOps.SelectQueryWithParams(
-            "SELECT house_id FROM Houses WHERE name = @name",
-            new Dictionary<string, string> { { "@name", newHouseName } }
-        );
-        
-        if (houseCheck.Count == 0)
+        string houseID = GetHouseIdByName(newHouseName);
+
+        if (!string.IsNullOrWhiteSpace(houseID))
         {
-            return false;
+            dataAccess.UpdateUserHouse(userId, houseID);
+            return true;
         }
-        
-        
-        SqliteOps.ModifyQueryWithParams(
-            "UPDATE Users SET house_name = @newHouse WHERE user_id = @userId",
-            new Dictionary<string, string>
-            {
-                { "@newHouse", newHouseName },
-                { "@userId", userId.ToString() }
-            }
-        );
-        
-        return true;
+        return false;
     }
     
 }

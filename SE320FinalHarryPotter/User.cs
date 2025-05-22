@@ -7,11 +7,9 @@ public class User {
     public int UserID;
     
     private IDataAccess dataAccess;
-    private SqliteOps ops;
 
     public User(IDataAccess dataAccess) {
         this.dataAccess = dataAccess;
-        this.ops = dataAccess.SqliteOps;
     }
     
     public virtual void CreateAccount(string username, string password)
@@ -45,70 +43,41 @@ public class User {
     }
     
     //ask user which house they are in and it updates dataabse
-    public virtual void AskAndSetUserHouse(int userId)
+    public virtual bool SetUserHouse(int userId, string houseName)
     {
-        
-        // UI
-        Console.WriteLine("What house are you in?");
-        string input = Console.ReadLine()?.Trim();
-        
         //validate the house using housepicked
-        var picker = new HousePicker(dataAccess);
-        string validHouse = picker.Evaluate(input);
+        HousePicker picker = new HousePicker(dataAccess);
+        string validHouse = picker.Evaluate(houseName);
 
         if (validHouse == "Invalid")
         {
-            // UI
-            Console.WriteLine("Invalid house. Please try again!");
-            return;
+            return false;
         }
         
-        //update the user house in database
+        string houseId = dataAccess.GetHouseIdByName(validHouse);
         
-        // databaase
-        string query = "UPDATE Users SET house_name = @house WHERE user_id=@userID)";
-        Dictionary<string, string> queryParams = new Dictionary<string, string>()
+        if (!string.IsNullOrWhiteSpace(houseId))
         {
-            { "@house", validHouse },
-            { "@userID", userId.ToString() }
-        };
-        
-        ops.ModifyQueryWithParams(query, queryParams);
-        
-        // UI
-        Console.WriteLine($"Your House has been set to: {validHouse}.");
+            dataAccess.UpdateUserHouse(userId, houseId);
+            return true;
+        }
+        return false;
     }
     
     public int GetStudentCountInHouse(string houseName)
     {
-        
-        // all goes in dataccess
-        string query = @"SELECT COUNT(*)
-                FROM Users as U 
-                INNER JOIN Houses as H 
-                    ON U.house_id = H.house_id
-                WHERE H.name = @houseName;";
-
-        Dictionary<string, string> queryParams = new Dictionary<string, string>()
-        {
-            { "@houseName", houseName }
-        };
-        List<string> count = ops.SelectQueryWithParams(query, queryParams);
-        
-        return Int32.Parse(count[0]);
+        return dataAccess.GetStudentCountInHouse(houseName);
     }
     public Dictionary<string, double> GetHouseMembershipPercentages()
     {
-        // all goes in data access
-        var totalUsersResult = ops.SelectQuery("SELECT COUNT(*) FROM Users");
-        int totalUsers = int.Parse(totalUsersResult[0]);
+        int totalUsers = dataAccess.GetTotalStudentCount();
 
-        var houseCounts = ops.SelectQuery("SELECT house_name, COUNT(*) FROM Users GROUP BY house_name");
+        List<string> houseCounts = dataAccess.GetStudentCountInHouseList();
 
-        var percentages = new Dictionary<string, double>();
-        foreach (var row in houseCounts)
+        Dictionary<string, double> percentages = new Dictionary<string, double>();
+        foreach (string row in houseCounts)
         {
-            var parts = row.Split(", ");
+            string[] parts = row.Split(", ");
             string house = parts[0];
             int count = int.Parse(parts[1]);
             percentages[house] = (double)count / totalUsers * 100;

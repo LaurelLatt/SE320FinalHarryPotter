@@ -2,7 +2,6 @@ namespace SE320FinalHarryPotter;
 
 public interface IDataAccess
 {
-    public SqliteOps SqliteOps { get; }
     
     public List<string> GetHouseNames();
     
@@ -15,4 +14,21 @@ public interface IDataAccess
     public void SetAdmin(int userID);
 
     public bool IsUniqueUsername(string username);
+    
+    public int GetStudentCountInHouse(string houseName);
+
+    public int GetTotalStudentCount();
+    
+    public List<string> GetStudentCountInHouseList();
+
+    public void CreateHouse(string name, string founder, string mascot, string colors, string traits, string description);
+
+    public List<string> GetHouseList();
+    
+    public string GetHouseIdByName(string houseName);
+
+    public void UpdateHouseDescription(string houseId, string description);
+
+    public void UpdateUserHouse(int userId, string newHouseName);
+    
 }
