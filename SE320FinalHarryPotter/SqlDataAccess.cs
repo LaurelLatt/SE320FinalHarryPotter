@@ -157,4 +157,39 @@ public class SqlDataAccess : IDataAccess {
             }
         );
     }
+
+    public string GetHouseFounder(string houseName) {
+        return GetSingular(houseName, "founder");
+    }
+
+    public string GetHouseMascot(string houseName) {
+        return GetSingular(houseName, "mascot");
+    }
+
+    public string GetHouseDescription(string houseName) {
+        return GetSingular(houseName, "description");
+    }
+
+    public string[] GetHouseColors(string houseName) {
+        return GetMultiple(houseName, "colors");
+    }
+
+    public string[] GetHouseTraits(string houseName) {
+        return GetMultiple(houseName, "traits");
+    }
+    
+    private string GetSingular(string houseName, string attribute) {
+        Dictionary<string, string> parms = new();
+        parms.Add("@name", houseName);
+
+        // dangerous :O
+        var list = sqliteOps.SelectQueryWithParams("SELECT " + attribute + " FROM Houses WHERE name = @name LIMIT 1",
+            parms);
+        return list[0];
+    }
+
+    // TODO: Make the query return an array or List to begin with
+    private string[] GetMultiple(string houseName, string attribute) {
+        return GetSingular(houseName, attribute).Split(',');
+    }
 }
