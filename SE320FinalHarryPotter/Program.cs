@@ -20,5 +20,7 @@ class Program
         // Follows Singleton
         int userID = UI.Instance.getUserID(user); 
         user.UserID = userID;
+        
+        UI.Instance.ShowUserMenu(user);
     }
 }
