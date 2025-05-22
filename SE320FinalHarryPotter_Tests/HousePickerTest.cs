@@ -28,9 +28,9 @@ public class HousePickerTest
         _sqliteOps.ModifyQuery(createTableQuery);
 
         string[] houseNames = { "Ravenclaw", "Slytherin", "Hufflepuff", "Gryffindor" };
-        foreach (var name in houseNames)
+        foreach (string name in houseNames)
         {
-            var queryParams = new Dictionary<string, string>
+            Dictionary<string, string> queryParams = new Dictionary<string, string>
             {
                 { "@name", name },
                 { "@founder", "Founder" },
@@ -53,7 +53,7 @@ public class HousePickerTest
     [InlineData("Gryffindor")]
     public void UserGetHouseCorrectResult(string userInputHouseName)
     {
-        var picker = new HousePicker(new SqlDataAccess(_sqliteOps));
+        HousePicker picker = new HousePicker(new SqlDataAccess(_sqliteOps));
         string result = picker.Evaluate(userInputHouseName);
         Assert.Equal(userInputHouseName, result);
     }
@@ -61,7 +61,7 @@ public class HousePickerTest
     [Fact]
     public void InvalidHouseReturnsInvalid()
     {
-        var picker = new HousePicker(new SqlDataAccess(_sqliteOps));
+        HousePicker picker = new HousePicker(new SqlDataAccess(_sqliteOps));
         string result = picker.Evaluate("Durmstrang");
         Assert.Equal("Invalid", result);
     }

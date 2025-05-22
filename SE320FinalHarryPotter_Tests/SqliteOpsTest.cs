@@ -13,7 +13,7 @@ public class SqliteOpsTest
             connection = new SqliteConnection("Data Source=:memory:");
             connection.Open();
 
-            var command = connection.CreateCommand();
+            SqliteCommand command = connection.CreateCommand();
             command.CommandText = @"
                 CREATE TABLE Users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,9 +31,9 @@ public class SqliteOpsTest
         [Fact]
         public void SelectQueryReturnsCorrectResult()
         {
-            var sqliteOps = CreateTestSqlOps(out var connection);
+            SqliteOps sqliteOps = CreateTestSqlOps(out SqliteConnection? connection);
 
-            var results = sqliteOps.SelectQuery("SELECT username FROM Users");
+            List<string> results = sqliteOps.SelectQuery("SELECT username FROM Users");
 
             Assert.Contains("Laurel", results);
             Assert.Contains("Harry", results);
@@ -43,15 +43,15 @@ public class SqliteOpsTest
         [Fact]
         public void SelectQueryWithParamsReturnsCorrectResult()
         {
-            var sqliteOps = CreateTestSqlOps(out var connection);
+            SqliteOps sqliteOps = CreateTestSqlOps(out SqliteConnection? connection);
 
-            var query = "SELECT username FROM Users WHERE username = @username";
-            var parameters = new Dictionary<string, string>
+            string query = "SELECT username FROM Users WHERE username = @username";
+            Dictionary<string, string> parameters = new Dictionary<string, string>
             {
                 { "@username", "Laurel" }
             };
 
-            var results = sqliteOps.SelectQueryWithParams(query, parameters);
+            List<string> results = sqliteOps.SelectQueryWithParams(query, parameters);
 
             Assert.Single(results);
             Assert.Equal("Laurel", results[0]);
@@ -61,11 +61,11 @@ public class SqliteOpsTest
         [Fact]
         public void ModifyQueryWorksCorrectly()
         {
-            var sqliteOps = CreateTestSqlOps(out var connection);
+            SqliteOps sqliteOps = CreateTestSqlOps(out SqliteConnection? connection);
 
             sqliteOps.ModifyQuery("INSERT INTO Users (username) VALUES ('Ron')");
 
-            var results = sqliteOps.SelectQuery("SELECT username FROM Users");
+            List<string> results = sqliteOps.SelectQuery("SELECT username FROM Users");
 
             Assert.Contains("Ron", results);
             
@@ -74,17 +74,17 @@ public class SqliteOpsTest
         [Fact]
         public void ModifyQueryWithParamsWorksCorrectly()
         {
-            var sqlOps = CreateTestSqlOps(out var connection);
+            SqliteOps sqlOps = CreateTestSqlOps(out SqliteConnection connection);
 
             string query = "INSERT INTO Users (username) VALUES (@username)";
-            var parameters = new Dictionary<string, string>
+            Dictionary<string, string> parameters = new Dictionary<string, string>
             {
                 { "@username", "Hermione" }
             };
 
             sqlOps.ModifyQueryWithParams(query, parameters);
 
-            var results = sqlOps.SelectQuery("SELECT username FROM Users");
+            List<string> results = sqlOps.SelectQuery("SELECT username FROM Users");
 
             Assert.Contains("Hermione", results);
             

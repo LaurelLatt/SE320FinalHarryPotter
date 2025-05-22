@@ -27,8 +27,8 @@ public class HouseDescriptorTest {
 		_sqliteOps.ModifyQuery(createTableQuery);
 
 		string[] houseNames = { "Ravenclaw", "Slytherin", "Hufflepuff", "Gryffindor" };
-		foreach (var name in houseNames) {
-			var queryParams = new Dictionary<string, string> {
+		foreach (string name in houseNames) {
+			Dictionary<string, string> queryParams = new Dictionary<string, string> {
 				{ "@name", name },
 				{ "@founder", "Founder" },
 				{ "@mascot", "Mascot" },

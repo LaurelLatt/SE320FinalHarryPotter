@@ -9,7 +9,7 @@ public class UserTest
         connection = new SqliteConnection("Data Source=:memory:");
         connection.Open();
     
-        var createCmd = connection.CreateCommand();
+        SqliteCommand createCmd = connection.CreateCommand();
         createCmd.CommandText = @"
             CREATE TABLE Users (
                 user_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,7 +35,7 @@ public class UserTest
     [Fact]
     private void CreateAccountSuccessfulTest()
     {
-        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
+        SqliteOps sqliteOps = CreateTestSqliteOps(out SqliteConnection? connection);
         User user = new User(new SqlDataAccess(sqliteOps));
         
         user.CreateAccount("harry", "potter123");
@@ -50,7 +50,7 @@ public class UserTest
     [Fact]
     private void LoginSuccessfulTest()
     {
-        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
+        SqliteOps sqliteOps = CreateTestSqliteOps(out SqliteConnection? connection);
         User user = new User(new SqlDataAccess(sqliteOps));
         
         user.CreateAccount("harry", "potter123");
@@ -63,7 +63,7 @@ public class UserTest
     [Fact]
     private void LoginFailedTest()
     {
-        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
+        SqliteOps sqliteOps = CreateTestSqliteOps(out SqliteConnection? connection);
         User user = new User(new SqlDataAccess(sqliteOps));
         
         user.CreateAccount("harry", "potter123");
@@ -75,7 +75,7 @@ public class UserTest
     [Fact]
     private void SetAdminSuccessfulTest()
     {
-        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
+        SqliteOps sqliteOps = CreateTestSqliteOps(out SqliteConnection? connection);
         User user = new User(new SqlDataAccess(sqliteOps));
         user.CreateAccount("harry", "potter123");
         int userID = user.Login("harry", "potter123");
@@ -93,7 +93,7 @@ public class UserTest
     [Fact]
     private void IsUniqueUsernameTrueTest()
     {
-        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
+        SqliteOps sqliteOps = CreateTestSqliteOps(out SqliteConnection? connection);
         User user = new User(new SqlDataAccess(sqliteOps));
         user.CreateAccount("harry", "potter123");
         user.CreateAccount("ron", "weasley456");
@@ -105,7 +105,7 @@ public class UserTest
     [Fact]
     private void IsUniqueUsernameFalseTest()
     {
-        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
+        SqliteOps sqliteOps = CreateTestSqliteOps(out SqliteConnection? connection);
         User user = new User(new SqlDataAccess(sqliteOps));
         user.CreateAccount("harry", "potter123");
         user.CreateAccount("ron", "weasley456");
@@ -117,7 +117,7 @@ public class UserTest
     [Fact]
     public void GetStudentCountInHouseSuccessfulTest()
     {
-        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
+        SqliteOps sqliteOps = CreateTestSqliteOps(out SqliteConnection? connection);
         User user = new User(new SqlDataAccess(sqliteOps));
         
         int count = user.GetStudentCountInHouse("Hufflepuff");
@@ -129,11 +129,11 @@ public class UserTest
     public void GetHouseMembershipPercentages_ReturnsCorrectValues()
     {
         // Setup in-memory DB with Users table including house_name
-        var connection = new SqliteConnection("Data Source=:memory:");
+        SqliteConnection connection = new SqliteConnection("Data Source=:memory:");
         connection.Open();
-        var sqliteOps = new SqliteOps(connection);
+        SqliteOps sqliteOps = new SqliteOps(connection);
 
-        var setupCmd = connection.CreateCommand();
+        SqliteCommand setupCmd = connection.CreateCommand();
         setupCmd.CommandText = @"
         CREATE TABLE Users (
             user_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -145,7 +145,7 @@ public class UserTest
         setupCmd.ExecuteNonQuery();
 
         // Insert test data
-        var insertUsers = new[]
+        string[] insertUsers = new[]
         {
             "INSERT INTO Users (username, password, house_name) VALUES ('Harry', 'pw', 'Gryffindor')",
             "INSERT INTO Users (username, password, house_name) VALUES ('Hermione', 'pw', 'Gryffindor')",
@@ -153,18 +153,17 @@ public class UserTest
             "INSERT INTO Users (username, password, house_name) VALUES ('Luna', 'pw', 'Ravenclaw')"
         };
 
-        foreach (var query in insertUsers)
+        foreach (string query in insertUsers)
         {
             sqliteOps.ModifyQuery(query);
         }
 
         // Use the public SqliteOps property in User (matching your current implementation)
-        var user = new User(new SqlDataAccess(sqliteOps));
+        User user = new User(new SqlDataAccess(sqliteOps));
         
-        // let's not write drunk code next time, okay?
         //user.SqliteOps = sqliteOps;
 
-        var result = user.GetHouseMembershipPercentages();
+        Dictionary<string, double> result = user.GetHouseMembershipPercentages();
 
         Assert.Equal(50.0, result["Gryffindor"]);
         Assert.Equal(25.0, result["Slytherin"]);

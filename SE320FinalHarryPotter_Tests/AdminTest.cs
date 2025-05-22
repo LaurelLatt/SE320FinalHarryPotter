@@ -10,7 +10,7 @@ public class AdminTest
         connection = new SqliteConnection("Data Source=:memory:");
         connection.Open();
 
-        var createCmd = connection.CreateCommand();
+        SqliteCommand createCmd = connection.CreateCommand();
         createCmd.CommandText = @"
             CREATE TABLE Houses (
                 house_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,14 +35,14 @@ public class AdminTest
     [Fact]
     public void CreateHouse_ShouldInsertHouseCorrectlyTest()
     {
-        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
+        SqliteOps sqliteOps = CreateTestSqliteOps(out SqliteConnection? connection);
         SqlDataAccess dataAccess = new SqlDataAccess(sqliteOps); // test instance
         Admin admin = new Admin(dataAccess); // Admin taking IDataAcess
 
         admin.CreateHouse("Ravenclaw", "Rowena", "Eagle",
             "Blue,Silver", "Wisdom,Wit", "Smart and sharp");
 
-        var houses = admin.GetHouseList();
+        List<string> houses = admin.GetHouseList();
         Assert.Single(houses);
         Assert.Equal("1, Ravenclaw, Rowena, Eagle, Blue,Silver, Wisdom,Wit, Smart and sharp", houses[0]);
     }
@@ -50,7 +50,7 @@ public class AdminTest
     [Fact]
     public void UpdateHouseDescriptionChangesDescription()
     {
-        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
+        SqliteOps sqliteOps = CreateTestSqliteOps(out SqliteConnection? connection);
         SqlDataAccess dataAccess = new SqlDataAccess(sqliteOps); // test instance
         Admin admin = new Admin(dataAccess); // Admin taking IDataAcess
 
@@ -60,7 +60,7 @@ public class AdminTest
         bool result = admin.UpdateHouseDescription("Slytherin", "Updated description");
 
         Assert.True(result);
-        var updated = sqliteOps.SelectQuery("SELECT description FROM Houses WHERE name = 'Slytherin'");
+        List<string> updated = sqliteOps.SelectQuery("SELECT description FROM Houses WHERE name = 'Slytherin'");
         Assert.Single(updated);
         Assert.Equal("Updated description", updated[0]);
     }
@@ -68,7 +68,7 @@ public class AdminTest
     [Fact]
     public void ChangeUserHouse_UpdatesUserHouse_WhenHouseExists()
     {
-        SqliteOps sqliteOps = CreateTestSqliteOps(out var connection);
+        SqliteOps sqliteOps = CreateTestSqliteOps(out SqliteConnection? connection);
         SqlDataAccess dataAccess = new SqlDataAccess(sqliteOps);
         Admin admin = new Admin(dataAccess);
 
@@ -82,8 +82,8 @@ public class AdminTest
 
         Assert.True(result);
 
-        var updated = sqliteOps.SelectQuery("SELECT house_id FROM Users WHERE user_id = 1");
-        var slytherinId = sqliteOps.SelectQuery("SELECT house_id FROM Houses WHERE name = 'Slytherin'")[0];
+        List<string> updated = sqliteOps.SelectQuery("SELECT house_id FROM Users WHERE user_id = 1");
+        string slytherinId = sqliteOps.SelectQuery("SELECT house_id FROM Houses WHERE name = 'Slytherin'")[0];
 
         Assert.Equal(slytherinId, updated[0]);
     }
