@@ -74,5 +74,9 @@ public class Admin
         }
         return false;
     }
-    
+
+    public bool IsAdmin(int userId)
+    {
+        return dataAccess.CheckIfAdmin(userId);
+    }
 }

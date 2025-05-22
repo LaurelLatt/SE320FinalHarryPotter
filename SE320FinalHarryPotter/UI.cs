@@ -100,7 +100,7 @@ public class UI
         Console.WriteLine(result ? $"Your house was set to {house}!" : "Failed to set house!");
     }
 
-    public void ShowUserMenu(User user)
+    public void ShowUserMenu(User user, Admin admin)
     {
         bool keepGoing = true;
 
@@ -112,7 +112,8 @@ User Menu:
 2. View My House Description
 3. View Student Count in My House
 4. View House Membership Percentages
-5. Exit
+5. View Admin Menu
+6. Exit
 Select option: ");
             string input = Console.ReadLine();
 
@@ -129,6 +130,16 @@ Select option: ");
                     break;
                 case "4":
                     ShowMembershipPercentages(user);
+                    break;
+                case "5":
+                    if (admin.IsAdmin(user.UserID))
+                    {
+                        ShowAdminMenu(user, admin);
+                    }
+
+                    break;
+                case "6":
+                    keepGoing = false;
                     break;
                 default:
                     Console.WriteLine("Invalid input. Try again.");
@@ -171,14 +182,7 @@ Select option: ");
     
     private string GetUserHouseName(User user)
     {
-        SqliteOps ops = new SqliteOps();
-        string query = "SELECT House FROM Users WHERE UserID = @UserID";
-        Dictionary<string, string> queryParams = new()
-        {
-            { "@id", user.UserID.ToString() }
-        };
-        List<string> result = ops.SelectQueryWithParams(query, queryParams);
-        return result.Count > 0 ? result[0] : "";
+        return user.GetUserHouseName(user.UserID);
     }
 
     private void ShowMembershipPercentages(User user)
@@ -189,6 +193,101 @@ Select option: ");
         foreach (var entry in percentages)
         {
             Console.WriteLine($"{entry.Key}: {entry.Value}");
+        }
+    }
+    
+    private void ShowAdminMenu(User user, Admin admin)
+    {
+        string userInput = "0";
+        while (userInput != "4")
+        { 
+            string Menu = @"
+        Admin Menu
+        ------------------
+        1. Add New House
+        2. Update House Description
+        3. Change a user's house
+        4. Exit Admin
+        Select option: 
+        ";
+            Console.WriteLine(Menu);
+            userInput = Console.ReadLine();
+            Console.WriteLine();
+        
+            switch (userInput)
+            {
+                case "1":
+                    PerformCreateHouse(admin);
+                    break;
+                case "2":
+                    PerformUpdateHouseDescription(admin);
+                    break;
+                case "3":
+                    PerformChangeUserHouse(user, admin);
+                    break;
+                default:
+                    Console.WriteLine("Please enter a valid option");
+                    break;
+            }
+        }
+    }
+
+    private void PerformCreateHouse(Admin admin)
+    {
+        Console.Write("Enter the name of the house: ");
+        string houseName = Console.ReadLine();
+        
+        Console.Write("Enter the founder of the house: ");
+        string founder = Console.ReadLine();
+
+        Console.Write("Enter the mascot of the house: ");
+        string mascot = Console.ReadLine();
+        
+        Console.Write("Enter the colors of the house: ");
+        string colors = Console.ReadLine();
+        
+        Console.Write("Enter the key traits of the house: ");
+        string traits = Console.ReadLine();
+        
+        Console.Write("Enter a short house description: ");
+        string description = Console.ReadLine();
+        
+        admin.CreateHouse(houseName, founder, mascot, colors, traits, description);
+    }
+
+    private void PerformUpdateHouseDescription(Admin admin)
+    {
+        Console.Write("Enter the name of the house: ");
+        string houseName = Console.ReadLine();
+        
+        Console.Write("Enter the new description: ");
+        string description = Console.ReadLine();
+        
+        bool updatedDescription = admin.UpdateHouseDescription(houseName, description);
+        if (updatedDescription == false)
+        {
+            Console.WriteLine("There was an error. Please check the house exists and try again.");
+        }
+        else
+        {
+            Console.WriteLine("House updated!");
+        }
+    }
+
+    private void PerformChangeUserHouse(User user, Admin admin)
+    {
+        Console.Write("Enter the name of the user: ");
+        string userName = Console.ReadLine();
+        if (userName == "")
+        {
+            Console.WriteLine("No user found!");
+        }
+        else
+        {
+            int userId = int.Parse(user.GetUserId(userName));
+            Console.Write("Enter the new house name for the user:");
+            string houseName = Console.ReadLine();
+            admin.ChangeUserHouse(userId, houseName);
         }
     }
 }

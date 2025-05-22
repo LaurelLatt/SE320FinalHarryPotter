@@ -37,5 +37,10 @@ public interface IDataAccess
     public void UpdateHouseDescription(string houseId, string description);
 
     public void UpdateUserHouse(int userId, string newHouseName);
-    
+
+    public string GetUserHouseName(int userId);
+
+    public string GetUserIdByName(string name);
+    public bool CheckIfAdmin(int userId);
+
 }
