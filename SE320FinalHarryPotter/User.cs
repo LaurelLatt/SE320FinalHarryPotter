@@ -85,4 +85,14 @@ public class User {
 
         return percentages;
     }
+
+    public string GetUserHouseName(int userId)
+    {
+        return dataAccess.GetUserHouseName(userId);
+    }
+
+    public string GetUserId(string name)
+    {
+        return dataAccess.GetUserIdByName(name);
+    }
 }

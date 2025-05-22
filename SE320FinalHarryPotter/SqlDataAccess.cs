@@ -86,7 +86,7 @@ public class SqlDataAccess() : IDataAccess {
 
     public List<string> GetStudentCountInHouseList()
     {
-        return sqliteOps.SelectQuery("SELECT house_name, COUNT(*) FROM Users GROUP BY house_name");
+        return sqliteOps.SelectQuery("SELECT h.name, COUNT(u.user_id) FROM Users AS u INNER JOIN Houses AS h ON u.house_id = h.house_id GROUP BY h.name");
     }
 
     public void CreateHouse(string name, string founder, string mascot, string colors, string traits, string description)
@@ -134,15 +134,53 @@ public class SqlDataAccess() : IDataAccess {
         sqliteOps.ModifyQueryWithParams(query, queryParams);
     }
 
-    public void UpdateUserHouse(int userId, string newHouseName)
+    public void UpdateUserHouse(int userId, string newHouseId)
     {
         sqliteOps.ModifyQueryWithParams(
             "UPDATE Users SET house_id = @newHouse WHERE user_id = @userId",
             new Dictionary<string, string>
             {
-                { "@newHouse", newHouseName },
+                { "@newHouse", newHouseId },
                 { "@userId", userId.ToString() }
             }
         );
+    }
+
+    public string GetUserHouseName(int userId)
+    {
+        string query = "SELECT Houses.name FROM Users INNER JOIN Houses ON Users.house_id = Houses.house_id WHERE User_id = @UserID";
+        Dictionary<string, string> queryParams = new()
+        {
+            { "@UserID", userId.ToString() }
+        };
+        List<string> result = sqliteOps.SelectQueryWithParams(query, queryParams);
+        return result.Count > 0 ? result[0] : "";
+    }
+
+    public string GetUserIdByName(string name)
+    {
+        string query = "SELECT user_id FROM Users WHERE username = @name";
+        Dictionary<string, string> queryParams = new Dictionary<string, string>()
+        {
+            { "@name", name }
+        };
+        
+        List<string> result = sqliteOps.SelectQueryWithParams(query, queryParams);
+        return result.Count > 0 ? result[0] : "";
+    }
+
+    public bool CheckIfAdmin(int userId)
+    {
+        string query = "SELECT is_admin FROM Users WHERE user_id = @userId";
+        Dictionary<string, string> queryParams = new Dictionary<string, string>()
+        {
+            { "@userId", userId.ToString() }
+        };
+        List<string> result = sqliteOps.SelectQueryWithParams(query, queryParams);
+        if (result[0] == "1")
+        {
+            return true;
+        }
+        return false;
     }
 }
