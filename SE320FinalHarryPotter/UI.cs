@@ -157,7 +157,7 @@ Select option: ");
             return;
         }
         
-        HouseDescriptor descriptor = new HouseDescriptor(new SqliteOps(), house);
+        HouseDescriptor descriptor = new HouseDescriptor(new SqlDataAccess(), house);
         
         Console.WriteLine($"Founder: {descriptor.Founder}");
         Console.WriteLine($"Mascot: {descriptor.Mascot}");

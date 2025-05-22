@@ -193,7 +193,9 @@ public class SqlDataAccess : IDataAccess {
         {
             return true;
         }
+
         return false;
+    }
 
     public string GetHouseFounder(string houseName) {
         return GetSingular(houseName, "founder");
