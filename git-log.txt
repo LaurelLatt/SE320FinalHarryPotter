@@ -1,0 +1,405 @@
+commit 98686419e65203f6d9463d5aa24bebe1acf81014
+Author: Joshua Fisher <123425451+josh-fisherr@users.noreply.github.com>
+Date:   Thu May 29 12:38:13 2025 -0700
+
+    Add files via upload
+
+commit 7ed8ad26920c9316ccaa943fdf58272f5492bcab
+Author: Joshua Fisher <123425451+josh-fisherr@users.noreply.github.com>
+Date:   Thu May 29 12:35:27 2025 -0700
+
+    Made a DOCS file to store the submission information
+
+commit 745ccfb707137c36d6abe1d05f2b691363f21366
+Author: Laurel Latt <latt@chapman.edu>
+Date:   Thu May 22 16:22:22 2025 -0700
+
+    added sample data
+
+commit 7b0a69bb6d85b7f95a31b66b04aa42e0a87c82c2
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Thu May 22 16:18:24 2025 -0700
+
+    Added Strategy Pattern to readme
+
+commit 2b42ec550ba672fd8bb5696a020c88b6f6e455a5
+Author: Laurel Latt <latt@chapman.edu>
+Date:   Thu May 22 16:17:05 2025 -0700
+
+    fixed merge conflicts
+
+commit 0a27e36bc93b25538379a6b0fe4c11356c919209
+Merge: 7356694 a521e0a
+Author: Laurel Latt <110741237+LaurelLatt@users.noreply.github.com>
+Date:   Thu May 22 16:13:23 2025 -0700
+
+    Merge pull request #21 from LaurelLatt/UIMenu
+    
+    updated ui program
+
+commit a521e0a4292cdb5d828958186504112d887c3a8b
+Merge: 05a9749 7356694
+Author: Laurel Latt <110741237+LaurelLatt@users.noreply.github.com>
+Date:   Thu May 22 16:13:04 2025 -0700
+
+    Merge branch 'master' into UIMenu
+
+commit 05a9749e0ffdd6b2a199ae954160f6013ec990de
+Author: Laurel Latt <latt@chapman.edu>
+Date:   Thu May 22 16:07:39 2025 -0700
+
+    updated ui program
+
+commit 73566941676b98b68e1ff175fdbff8572736cd6b
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Thu May 22 16:00:49 2025 -0700
+
+    Updated README with Singleton
+
+commit 5e1bacb57f23b61ef38b2c141a9b7ebefc04c764
+Merge: 5f49b15 707c8a5
+Author: Jalen Myers <112717360+jalenmyers@users.noreply.github.com>
+Date:   Thu May 22 15:51:44 2025 -0700
+
+    Merge pull request #20 from LaurelLatt/README
+    
+    Readme
+
+commit 707c8a5a657d2eae6a0b5349bf01e8434720f9e7
+Author: Jalen Myers <jalmyers@chapman.edu>
+Date:   Thu May 22 15:50:27 2025 -0700
+
+    README file
+
+commit 5f49b1537ec201ed3aa3aa814bda58ddf826004b
+Merge: 8edfbbb ec1dbc8
+Author: Joshua Fisher <123425451+josh-fisherr@users.noreply.github.com>
+Date:   Thu May 22 15:45:17 2025 -0700
+
+    Merge pull request #19 from LaurelLatt/SqlDataAccessIDataAccessTestImplementation
+    
+    Added IDataAcessTest and SqlDataAcessTest
+
+commit b480508a4f338257f7e982dae0b5da2891a38c02
+Author: Jalen Myers <jalmyers@chapman.edu>
+Date:   Thu May 22 15:43:33 2025 -0700
+
+    README file
+
+commit ec1dbc8adb0f12d880dc36e8d14c65d552bb5bf9
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Thu May 22 15:33:57 2025 -0700
+
+    Added IDataAcessTest and SqlDataAcessTest
+
+commit 8edfbbba950a508f14e6bf1a4fdc381acece847f
+Merge: 871e1bd 8c96767
+Author: Joshua Fisher <123425451+josh-fisherr@users.noreply.github.com>
+Date:   Thu May 22 15:23:35 2025 -0700
+
+    Merge pull request #18 from LaurelLatt/FixingHouseDescriptorTest
+    
+    Changed reliaiblity on the test for using DataAccess instead of direct Sqlite
+
+commit 3a1946672a49f1e5b96f9143040474a46e9284c3
+Author: Jalen Myers <jalmyers@chapman.edu>
+Date:   Thu May 22 15:21:58 2025 -0700
+
+    UI for user
+
+commit 8c967671b162894237aeaff5e0bc8761cd7eb200
+Author: SuperStik <daviswood290@gmail.com>
+Date:   Thu May 22 15:12:23 2025 -0700
+
+    Move house stuff to data access
+
+commit cca44a452eaa7db3fa9125f18784099d8e3a3415
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Thu May 22 14:58:48 2025 -0700
+
+    Changed reliaiblity on the test for using DataAccess instead of directl Sqlite
+
+commit 871e1bd5147192c2ff5b5deb4997556af3fc3d59
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Thu May 22 14:36:01 2025 -0700
+
+    Removed generics and specified in tests
+
+commit fbd8679c55a40b64dd52a2a19eedebae888eb3b7
+Merge: bfcb743 b481a71
+Author: Joshua Fisher <123425451+josh-fisherr@users.noreply.github.com>
+Date:   Thu May 22 14:16:08 2025 -0700
+
+    Merge pull request #17 from LaurelLatt/FixAdminTest
+    
+    - Fixed AdminTest to work with the new modified implementation along with fixing it to use houseId instead of house name - Added a test constructor + production one
+
+commit b481a712d72b64cfc95b303b859ed7343f48f614
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Thu May 22 14:05:45 2025 -0700
+
+    - Fixed AdminTest to work with the new modified implementation along with fixing it to use houseId instead of house name
+    - Added a test constructor + production one
+
+commit bfcb7430fa0309f2ad08b027f19c74d84d5324bb
+Merge: d8a8b75 24bafb6
+Author: Laurel Latt <110741237+LaurelLatt@users.noreply.github.com>
+Date:   Thu May 22 11:43:56 2025 -0700
+
+    Merge pull request #16 from LaurelLatt/DataAccessSeparation
+    
+    Separated out all database requests
+
+commit 24bafb67994ecbfaca91c6ad2cb6af288cc4f9c1
+Author: Laurel Latt <latt@chapman.edu>
+Date:   Thu May 22 01:07:52 2025 -0700
+
+    Separated out all database requests and fixed one method in User that needed separation into UI
+
+commit d8a8b757e9eb9981f30d45af17be1ac6d736315a
+Author: Davis Wood <51009602+SuperStik@users.noreply.github.com>
+Date:   Wed May 21 14:01:02 2025 -0700
+
+    UI class creation (#15)
+    
+    * - Added UI, IDataAccess, SqlDataAccess all to make it more universal for other projects (good practice)
+    - Modified data manipulation to not be within the specific methods (seperation of concerns)
+    - Implemented Strategy, and Singleton design patterns
+    
+    * Add local SqliteOps to User
+    
+    * Fix tests and things
+    
+    * Expose SqliteOps getter from SqlDataAccess
+    
+    * Whitespace
+    
+    ---------
+    
+    Co-authored-by: Joshua Fisher <joshfisher@chapman.edu>
+
+commit 703fe645df85e7f1c0c2f1385e8fe92c1cebb25f
+Merge: f375776 927f203
+Author: Jalen Myers <112717360+jalenmyers@users.noreply.github.com>
+Date:   Tue May 20 18:41:17 2025 -0700
+
+    Merge pull request #14 from LaurelLatt/AdminRefactoring
+    
+    Refactored and added observer into admin, and then I put admincreatehousetest into admintest and cleaned it all up
+
+commit 927f20392068c44749a698febe0e5480be3a3b48
+Author: Jalen Myers <jalmyers@chapman.edu>
+Date:   Tue May 20 18:38:23 2025 -0700
+
+    Refactored and added observer pattern into admin, and put admincreatehousetest into admintest and cleaned it all up(refactored)
+
+commit f3757763492393e809d923e3076b4e9710a02ff8
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Tue May 20 16:10:55 2025 -0700
+
+    Refactored HousePicker.cs
+    _validHouses renamed and made readonly, LoadValidHouses(), string? and IsNullOrWhiteSpace(), Trim(), SqliteOps.SelectQuery("SELECT name FROM Houses")
+
+commit 30a65823e98420509beb4bc554e3c7e99492ed06
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Tue May 20 16:00:47 2025 -0700
+
+    - Combined UserRequestPercentage with User for simplicity same with the tests and removed the other files UserRequestPercentage.cs + UserRequestPercentageTest.cs
+
+commit e3d776ecf736ceb1947db0a608a4d96eeaf94b62
+Merge: bb8a541 bc5a5c6
+Author: Laurel Latt <110741237+LaurelLatt@users.noreply.github.com>
+Date:   Thu May 15 18:17:03 2025 -0700
+
+    Merge pull request #11 from LaurelLatt/DatabaseFixing
+    
+    possible database fix
+
+commit bc5a5c6b396987a262f68f97056fda0cbad62696
+Author: Laurel Latt <latt@chapman.edu>
+Date:   Thu May 15 18:14:42 2025 -0700
+
+    possible database fix
+
+commit bb8a5417920ca28e9ceb78c2144c764e0e83feaf
+Merge: a35980d e6e42a4
+Author: Laurel Latt <110741237+LaurelLatt@users.noreply.github.com>
+Date:   Thu May 15 15:52:38 2025 -0700
+
+    Merge pull request #10 from LaurelLatt/UserRefactoring
+    
+    refactored some classes and added code to program.cs
+
+commit e6e42a49a8c1eee39a98585746f56d70489b94c7
+Author: Laurel Latt <latt@chapman.edu>
+Date:   Wed May 14 16:49:30 2025 -0700
+
+    refactored some classes and added code to program.cs
+
+commit a35980d7c7f9c00b08a02511ad8ba8fdb5a5d80e
+Author: Davis Wood <51009602+SuperStik@users.noreply.github.com>
+Date:   Tue May 13 18:43:19 2025 -0700
+
+    Refactoring House Description (#9)
+    
+    * Start refactor on HouseQuery (used to be HouseDescription)
+    
+    * Another rename and add stubs
+    
+    * Add getters
+    
+    * Remove House.cs
+    
+    * Fix HouseDescriptorTest
+    
+    * New HouseDescriptor tests
+
+commit 79df11bb81b8a8db6d8253c7b0d59c09c1333379
+Merge: 7e95e85 73163e4
+Author: Jalen Myers <112717360+jalenmyers@users.noreply.github.com>
+Date:   Tue May 13 17:10:25 2025 -0700
+
+    Merge pull request #8 from LaurelLatt/CheckUserHouse
+    
+    added method that asks the user what house they are in and updates th…
+
+commit 73163e4b9e31afd32760a70a5a52c21fd7e0e49b
+Author: Jalen Myers <jalmyers@chapman.edu>
+Date:   Tue May 13 17:09:16 2025 -0700
+
+    added method that asks the user what house they are in and updates that in the database
+
+commit 7e95e85e5e5bc403b8a26e3172f2a1a9a5deb814
+Merge: f3b4bba 37d6145
+Author: Laurel Latt <110741237+LaurelLatt@users.noreply.github.com>
+Date:   Tue May 13 16:24:59 2025 -0700
+
+    Merge pull request #7 from LaurelLatt/CreateLoginSystem
+    
+    edited login methods and added some methods that can run as the actua…
+
+commit 37d61459fd1708d611ca0f89b6ef3797eb17e4a5
+Author: Laurel Latt <latt@chapman.edu>
+Date:   Tue May 13 16:21:08 2025 -0700
+
+    edited login methods and added some methods that can run as the actual program
+
+commit f3b4bbac342a60d5ac5d8b5e5611d53339cac618
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Tue May 13 13:12:32 2025 -0700
+
+    Added Admin being able to edit user data's house + tests for it
+
+commit 940913de0bc525f65b6d1921f6bd6e1cc0552cb3
+Merge: 8b7e916 e82441a
+Author: Laurel Latt <110741237+LaurelLatt@users.noreply.github.com>
+Date:   Tue May 13 00:33:00 2025 -0700
+
+    Merge pull request #6 from LaurelLatt/login
+    
+    Added login/create account methods
+
+commit e82441a3cdb4359258654fb934b610c743a9004b
+Author: Laurel Latt <latt@chapman.edu>
+Date:   Mon May 12 17:35:47 2025 -0700
+
+    Added login/create account methods
+
+commit 8b7e9161d8547658c171d2dc084ca42755736762
+Author: Jalen Myers <112717360+jalenmyers@users.noreply.github.com>
+Date:   Sun May 11 17:11:52 2025 -0700
+
+    fixed AdminCreateHouseTest.cs so there are no more errors. (#5)
+
+commit b3ab7f97cd5cc834820afe1e3a5eb6d0ba2ad9ad
+Merge: ec3ea29 3749536
+Author: Davis Wood <51009602+SuperStik@users.noreply.github.com>
+Date:   Thu May 8 17:39:32 2025 -0700
+
+    Merge pull request #4 from LaurelLatt/gethousedesc
+    
+    Add preliminary methods for getting house description
+
+commit 3749536a7e9cb533517727391dd9e9782b7817b6
+Author: SuperStik <daviswood290@gmail.com>
+Date:   Thu May 8 17:06:09 2025 -0700
+
+    Fixup house description getter
+
+commit cec2ea2739bd38a4838e3110d38374b131d27dfd
+Author: SuperStik <daviswood290@gmail.com>
+Date:   Thu May 8 16:48:22 2025 -0700
+
+    Add preliminary methods for getting house description
+
+commit ec3ea29133048a7556960632f06cf9073845b3b0
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Thu May 8 16:19:06 2025 -0700
+
+    Created UserRequestPercentage and UserRequestPercentageTest
+
+commit 998420328ee5448a242f5ad284be08b9fb4bb2ad
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Thu May 8 16:15:53 2025 -0700
+
+    Fixed HousePicker and HousePickerTest with refactored code
+
+commit 21fef4a1e40f6721161d964241a1912b263fa015
+Merge: bf7424a 07757d1
+Author: Laurel Latt <110741237+LaurelLatt@users.noreply.github.com>
+Date:   Thu May 8 16:05:40 2025 -0700
+
+    Merge pull request #2 from LaurelLatt/house-count-database
+    
+    Refactored a bit and added database implementation
+
+commit 07757d1b67e125309ebb93ff9aa81049a4289942
+Author: Laurel Latt <latt@chapman.edu>
+Date:   Thu May 8 16:04:50 2025 -0700
+
+    Refactored a bit and added database implementation
+
+commit bf7424a396c5a230b975fdbc184cc0cdb68c1c50
+Merge: ab1d59e ff0592f
+Author: Jalen Myers <112717360+jalenmyers@users.noreply.github.com>
+Date:   Thu May 8 12:19:37 2025 -0700
+
+    Merge pull request #1 from LaurelLatt/HouseCount
+    
+    Added house count class to the admincreatehouse
+
+commit ff0592fe6515b0435ec87987f88a3e3c82a9e9b3
+Author: Jalen Myers <jalmyers@chapman.edu>
+Date:   Thu May 8 12:17:44 2025 -0700
+
+    Added house count class to the admincreatehouse
+
+commit ab1d59ed2660a109fb7ae973a352b70979a331fe
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Wed May 7 23:10:54 2025 -0700
+
+    Added notes to HousePicker
+
+commit df280ec4335bb9d3491d70bfebcf94aa734fc50b
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Wed May 7 23:02:43 2025 -0700
+
+    Added the HousePicker and HousePickerTest to integrate with the Database
+
+commit 6ba4c29582447a903501fa1db1c8cf7d1355cf2a
+Author: Joshua Fisher <joshfisher@chapman.edu>
+Date:   Tue May 6 18:48:09 2025 -0700
+
+    Added HousePicker
+
+commit 8439f604507def35b1b1849c3074013e395d87bc
+Author: Laurel Latt <latt@chapman.edu>
+Date:   Tue May 6 18:44:25 2025 -0700
+
+    Initial Main Push
+
+commit 9b94326af04ef71700f74ead1e13cff0b3b11edf
+Author: Laurel Latt <latt@chapman.edu>
+Date:   Tue May 6 18:38:51 2025 -0700
+
+    Initial commit
